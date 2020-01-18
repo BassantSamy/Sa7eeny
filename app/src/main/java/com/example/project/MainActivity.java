@@ -71,6 +71,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         RV.setAdapter(adapter);
         Disp(LET);
 
+        RV.addOnItemTouchListener(
+            new RecyclerItemClickListener(getApplicationContext(), RV ,new RecyclerItemClickListener.OnItemClickListener() {
+                @Override public void onItemClick(View view, int position) {
+                    Intent editIntent = new Intent(getApplicationContext(),AddAlarm.class);
+                    startActivity(editIntent);
+                }
+
+                @Override public void onLongItemClick(View view, int position) {
+                    // do whatever
+                }
+            })
+        );
+
+
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
