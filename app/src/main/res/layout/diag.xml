@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/beige_light"
+    >
+<LinearLayout  android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="50dp"
+    android:background="@color/beige_light"
+    >
+
+    <EditText
+        android:id="@+id/task_text_diag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:hint=" Your Task"
+        android:textSize="20dp"
+        android:background="@drawable/edittxtshape"
+        android:textCursorDrawable="@null"
+        android:fontFamily="@font/bad_script"
+        />
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="@color/beige_light">
+    <EditText
+        android:id="@+id/duration_hr_text_diag"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/edittxtshape"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:textCursorDrawable="@null"
+        android:inputType="numberDecimal"
+        android:textSize="20dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bad_script"></EditText>
+
+    <TextView
+        android:id="@+id/txt_hr_diag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hr"
+        android:textSize="14dp"
+        android:layout_centerVertical="true"
+        android:layout_weight="0.5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bad_script"></TextView>
+
+
+    <EditText
+        android:id="@+id/txt_min_diag"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/edittxtshape"
+        android:textSize="20dp"
+        android:textCursorDrawable="@null"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/bad_script"></EditText>
+
+    <TextView
+        android:id="@+id/duration_min_text_diag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="min"
+        android:textSize="14dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bad_script"
+        ></TextView>
+
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="20dp"
+    android:orientation="horizontal"
+    android:background="@color/beige_light">
+    <TextView
+        android:id="@+id/error"
+        android:text=" "
+        android:textSize="12dp"
+        android:textColor="@color/darkerPeach"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </TextView>
+
+</LinearLayout>
+
+</LinearLayout>
