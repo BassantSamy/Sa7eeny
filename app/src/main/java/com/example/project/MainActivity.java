@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -88,38 +89,28 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             adapter.removeItem(deletedIndex);
             Disp(LET);
 
-            Snackbar snack = Snackbar.make(rootLayout,"Alarm was removed!", Snackbar.LENGTH_LONG);
+            Snackbar snack = Snackbar.make(rootLayout, "Alarm was removed!", Snackbar.LENGTH_LONG);
             snack.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    adapter.restoreItem(lEntry,deletedIndex);
+                    adapter.restoreItem(lEntry, deletedIndex);
+                    Disp(LET);
                 }
             });
             snack.setActionTextColor(Color.YELLOW);
+            snack.setBackgroundTint(getResources().getColor(R.color.darkPeach));
             snack.show();
         }
     }
-//
-//    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-//        @Override
-//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//            return false;
-//        }
-//
-//        @Override
-//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//            LET.remove(viewHolder.getAdapterPosition());
-//            adapter.notifyDataSetChanged();
-//            Toast.makeText(MainActivity.this, "Alarm Deleted ", Toast.LENGTH_SHORT).show();
-//            Disp(LET);
-//        }
-//    };
-
 
     public void Disp(List<listEntry> LEt){
         if (LEt.size() == 0){
             iv.setImageResource(R.drawable.owl1);
             addAlarm.setText("No Alarms Are Currently set.\n To set an Alarm click on the Alarm button at the upper right corner.");
+        }else
+        {
+            iv.setImageDrawable(null);
+            addAlarm.setText("");
         }
     }
 
