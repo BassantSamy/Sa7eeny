@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/darkPeach"
+        android:minHeight="?attr/actionBarSize"
+        android:padding="10dp"
+        android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Sa7eeny"
+            android:textColor="@color/black"
+            android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/iconImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo" />
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/destinationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="15sp"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/destination"
+            android:textColor="#0E0E0D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/mapsButton"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:background="@drawable/maps"
+            android:layout_marginLeft="125sp"
+            android:layout_marginTop="25sp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/timeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="15sp"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/time"
+            android:textColor="#0E0E0D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="50sp"
+            >
+
+            <ImageButton
+                android:id="@+id/timeButton"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:layout_marginLeft="55sp"
+                android:layout_marginTop="25sp"
+                android:background="@drawable/time" />
+
+            <TextView
+                android:id="@+id/timePicked"
+                android:layout_width="133dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="cursive"
+                android:text="@string/pickedTime"
+                android:layout_marginLeft="10sp"
+                android:textAlignment="center"
+                android:textColor="#79796F"
+                android:textSize="30sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/repeatText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="15sp"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/repeat"
+            android:textColor="#0E0E0D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/tasksButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="190sp"
+            android:layout_marginTop="10sp"
+            android:backgroundTint="#E3ACA2"
+            android:drawableRight="@drawable/plus"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/tasks"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#0E0E0D"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/setButton"
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="150sp"
+            android:drawableRight="@drawable/clock"
+            android:backgroundTint="#E9B6A5"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/set"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#0E0E0D"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Sa7eeny</string>
+    <string name="destination"> Destination </string>
+    <string name="time">Arrival Time</string>
+    <string name="pickedTime">picked time</string>
+    <string name="repeat">Repeat</string>
+    <string name="days">days</string>
+    <string name="tasks">Add Tasks </string>
+    <string name="set">Set Alarm !</string>
+
+
+    <string-array name="days">
+        <item>---------------Select Days---------------</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+
+    <string-array name="alarms">
+        <item>9:00</item>
+        <item>10:00</item>
+        <item>5:00</item>
+    </string-array>
+
+    <string-array name="ampm">
+        <item>AM</item>
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
+
+    <string name="title_activity_maps">Map</string>
+</resources>

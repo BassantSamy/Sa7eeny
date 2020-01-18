@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#0F0F0F</color>
+    <color name="background">#ECE0D9</color>
+    <color name="color_accent">#f14268</color>
+    <color name="color_primary">#d83b5d</color>
+    <color name="color_secondary">#d83b5d</color>
+    <color name="peach">#D8A59B</color>
+    <color name="darkPeach">#D59F98</color>
+    <color name="darkerPeach">#B98A84</color>
+    <color name="MediumPurple">#9370DB</color>
+    <color name="blg1">#CC3C4B58</color>
+    <color name="white">#FFFFFF</color>
+</resources>
