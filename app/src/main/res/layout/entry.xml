@@ -1,50 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="10dp"
+    android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/TV1"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/bad_script"
-        android:text="Main Title"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        app:cardElevation="16dp">
 
-    <TextView
-        android:id="@+id/TV2"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_primary">
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_delete_sweep_white_24dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/TV1"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_toRightOf="@id/TV1"
-        android:fontFamily="@font/bad_script"
-        android:text="AM"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:background="@color/pb"
+        >
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:scaleX="1.25"
-        android:scaleY="1.25"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="290dp"
-        android:theme="@style/SwitchTheme"
-        android:checked="true"
-        android:layout_marginTop="40sp"/>
+        <TextView
+            android:id="@+id/TV1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bad_script"
+            android:text="Main Title"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/TV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TV1"
+            android:layout_toRightOf="@id/TV1"
+            android:fontFamily="@font/bad_script"
+            android:text="AM"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="290dp"
+            android:theme="@style/SwitchTheme"
+            android:checked="true"
+            android:layout_marginTop="40sp"/>
+    </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

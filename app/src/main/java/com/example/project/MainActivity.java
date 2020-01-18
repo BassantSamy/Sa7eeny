@@ -2,13 +2,18 @@ package com.example.project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,18 +21,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
     private RecyclerView RV;
+    private List<listEntry> LET;
+    private RVAdapter adapter;
+    private CoordinatorLayout rootLayout;
     String [] alarms;
     String [] ampm;
-    List<listEntry> LET;
     listEntry LE;
     ImageView iv;
     TextView addAlarm;
-    private customAdapter adapter;
+    //private customAdapter adapter;
     ImageButton imgBtn ;
 
     @Override
@@ -42,17 +51,22 @@ public class MainActivity extends AppCompatActivity {
         addAlarm = findViewById(R.id.addalarm);
         alarms = getResources().getStringArray(R.array.alarms);
         ampm = getResources().getStringArray(R.array.ampm);
+        rootLayout = findViewById(R.id.root);
+
         LET = new ArrayList<listEntry>();
 
         for (int i = 0; i < alarms.length; i++) {
             LE = new listEntry(alarms[i], ampm[i]);
             LET.add(LE);
         }
-        adapter = new customAdapter(LET, this);
-        RV.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RVAdapter(this, LET);
+        RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
+        RV.setLayoutManager(LM);
         RV.setItemAnimator(new DefaultItemAnimator());
-        RV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(RV);
+        //RV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        ItemTouchHelper.SimpleCallback ITH = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(ITH).attachToRecyclerView(RV);
         RV.setAdapter(adapter);
         Disp(LET);
 
@@ -65,20 +79,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position){
+        if (viewHolder instanceof RVAdapter.MyViewHolder){
+            final listEntry lEntry = LET.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
 
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            LET.remove(viewHolder.getAdapterPosition());
-            adapter.notifyDataSetChanged();
-            Toast.makeText(MainActivity.this, "Alarm Deleted ", Toast.LENGTH_SHORT).show();
+            adapter.removeItem(deletedIndex);
             Disp(LET);
+
+            Snackbar snack = Snackbar.make(rootLayout,"Alarm was removed!", Snackbar.LENGTH_LONG);
+            snack.setAction("UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    adapter.restoreItem(lEntry,deletedIndex);
+                }
+            });
+            snack.setActionTextColor(Color.YELLOW);
+            snack.show();
         }
-    };
+    }
+//
+//    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+//        @Override
+//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//            return false;
+//        }
+//
+//        @Override
+//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//            LET.remove(viewHolder.getAdapterPosition());
+//            adapter.notifyDataSetChanged();
+//            Toast.makeText(MainActivity.this, "Alarm Deleted ", Toast.LENGTH_SHORT).show();
+//            Disp(LET);
+//        }
+//    };
 
 
     public void Disp(List<listEntry> LEt){
