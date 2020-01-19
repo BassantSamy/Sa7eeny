@@ -11,7 +11,7 @@ android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/TF_location"
-        android:layout_width="290dp"
+        android:layout_width="250dp"
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -22,7 +22,7 @@ android:layout_height="match_parent">
 
     <Button
         android:id="@+id/B_search"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="45dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/TF_location"
@@ -35,11 +35,28 @@ android:layout_height="match_parent">
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_height="560dp"
     tools:context=".MapsActivity"
     android:layout_alignParentStart="true"
     android:layout_alignParentBottom="true"/>
 
+    <Button
+        android:id="@+id/B_cafe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/TF_location"
+        android:onClick="onClick"
+        android:text="Coffee Shops" />
+
+    <Button
+        android:id="@+id/B_bakery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TF_location"
+        android:layout_toEndOf="@+id/B_cafe"
+        android:onClick="onClick"
+        android:text="Bakeries" />
 
 
 

@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -49,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastlocation;
     private Marker currentLocationmMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+    int PROXIMITY_RADIUS = 10000;
+    double latitude,longitude;
+
 
 
 
@@ -82,24 +86,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onClick(View v)
     {
-        if (v.getId() == R.id.B_search)
-            { tf_location = findViewById(R.id.TF_location);
+
+        Object dataTransfer[] = new Object[2];
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
+
+        switch(v.getId())
+        {
+            case R.id.B_search:
+                tf_location = findViewById(R.id.TF_location);
                 String location = tf_location.getText().toString();
                 List<Address> addressList;
                 MarkerOptions mo = new MarkerOptions();
 
-                if(!location.equals(""))
-                {
+                if (!location.equals("")) {
                     Geocoder geocoder = new Geocoder(this);
 
                     try {
                         addressList = geocoder.getFromLocationName(location, 5);
-                        if(addressList != null)
-                        {
-                            for(int i = 0;i<addressList.size();i++)
-                            {
+                        if (addressList != null) {
+                            for (int i = 0; i < addressList.size(); i++) {
                                 Address myAddress = addressList.get(i);
-                                LatLng latLng = new LatLng(myAddress.getLatitude() , myAddress.getLongitude());
+                                LatLng latLng = new LatLng(myAddress.getLatitude(), myAddress.getLongitude());
                                 mo.position(latLng);
                                 mo.title("Your Search Result");
                                 mMap.addMarker(mo);
@@ -111,11 +119,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         e.printStackTrace();
                     }
                 }
+                break;
+
+            case R.id.B_cafe:
+                mMap.clear();
+                String cafe = "cafe";
+                String url = getUrl(latitude, longitude, cafe);
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+
+                getNearbyPlacesData.execute(dataTransfer);
+                Toast.makeText(MapsActivity.this, "Showing Nearby Coffee Shops", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.B_bakery:
+                mMap.clear();
+                String bakery = "bakery";
+                url = getUrl(latitude, longitude, bakery);
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+
+                getNearbyPlacesData.execute(dataTransfer);
+                Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
+                break;
 
 
         }
+
     }
 
+    private String getUrl(double latitude , double longitude , String nearbyPlace)
+    {
+
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/search/json?");
+        googlePlaceUrl.append("location="+latitude+","+longitude);
+        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type="+nearbyPlace);
+        googlePlaceUrl.append("&sensor=true");
+        googlePlaceUrl.append("&key="+"AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0");
+
+        Log.d("MapsActivity", "url = "+googlePlaceUrl.toString());
+
+        return googlePlaceUrl.toString();
+    }
 
 
     @Override
@@ -198,6 +244,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
 
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         lastlocation = location;
 
         if(currentLocationmMarker != null)
