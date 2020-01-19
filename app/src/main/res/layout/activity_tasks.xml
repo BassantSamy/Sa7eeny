@@ -90,7 +90,7 @@
         android:id="@+id/btn_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/blackplus"
+        android:src="@drawable/plus"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/lv_1"
         android:layout_marginTop="15dp"

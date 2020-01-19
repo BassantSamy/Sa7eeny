@@ -24,6 +24,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
     static ArrayList<StateVO> listVOs;
     TextView textV ;
     Button setAlarm ;
+    Button tasksButton ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         timeButton = (ImageButton) findViewById(R.id.timeButton);
         textV = findViewById(R.id.timeText);
         setAlarm= (Button)findViewById(R.id.setButton);
+        tasksButton = (Button) findViewById(R.id.tasksButton);
+
 
         Resources res = getResources();
         String[] days =res.getStringArray(R.array.days);
@@ -41,7 +45,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Maps = new Intent(getApplicationContext(), MainActivity.class);
+                Intent Maps = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(Maps);
             }
         });
@@ -59,6 +63,14 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             public void onClick(View v) {
                 Intent Main = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(Main);
+            }
+        });
+
+        tasksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
+                startActivity(tasksPage);
             }
         });
         Spinner spinner = (Spinner) findViewById(R.id.spinner);

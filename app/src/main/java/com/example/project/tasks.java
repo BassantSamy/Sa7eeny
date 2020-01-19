@@ -34,6 +34,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     ImageButton btn;
     chCustomAdapter chadapter;
     CustomAdapter adapter;
+    Button set ;
 
     TextView Suggested_title;
 
@@ -47,6 +48,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         list1= findViewById(R.id.lv_1);
         list2=findViewById(R.id.lv_2);
         btn=findViewById(R.id.btn_img);
+        set = (Button) findViewById(R.id.btn_set);
 
         Suggested_title=findViewById(R.id.title_1);
 
@@ -78,19 +80,27 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
             }
         });
 
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
+                startActivity(Set);
+            }
+        });
+//
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                boolean addF= true;
-//                for (int i=0; i<userTasks.size();i++){
-//                    if(userTasks.get(i).getName().equals("  "))
-//                    {
-//                        addF=false;
-//                    }
-//                }
-//                if(addF==true) {
-//                    userTasks.add(new Task("  "));
-//                    adapter.notifyDataSetChanged();
-//                }
+                boolean addF= true;
+                for (int i=0; i<userTasks.size();i++){
+                    if(userTasks.get(i).getName().equals("  "))
+                    {
+                        addF=false;
+                    }
+                }
+                if(addF==true) {
+                    userTasks.add(new Task("  "));
+                    adapter.notifyDataSetChanged();
+                }
                 openDialog();
             }
 

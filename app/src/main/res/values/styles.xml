@@ -32,5 +32,11 @@
         <item name="colorControlActivated">#148E13</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/beige_light</item>
+        <item name="android:fontFamily">@font/bad_script</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
 
 </resources>

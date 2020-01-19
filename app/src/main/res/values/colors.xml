@@ -12,4 +12,8 @@
     <color name="blg1">#CC3C4B58</color>
     <color name="white">#FFFFFF</color>
     <color name="pb">#FFE9D0</color>
+    <color name="beige_light">#FFF0D9</color>
+    <color name="beige">#FFE7CF</color>
+    <color name="beige_dark">#EDD1BF</color>
+    <color name="beige_pink">#CDA39F</color>
 </resources>
