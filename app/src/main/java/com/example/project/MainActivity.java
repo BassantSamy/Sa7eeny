@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     listEntry LE;
     ImageView iv;
     TextView addAlarm;
-    //private customAdapter adapter;
     ImageButton imgBtn ;
 
     @Override

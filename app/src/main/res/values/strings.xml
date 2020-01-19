@@ -2,8 +2,8 @@
     <string name="app_name">Sa7eeny</string>
     <string name="destination"> Destination </string>
     <string name="time">Arrival Time</string>
-    <string name="pickedTime">picked time</string>
-    <string name="repeat">Repeat</string>
+    <string name="pickedTime">picked time </string>
+    <string name="repeat">Repeat :</string>
     <string name="days">days</string>
     <string name="tasks">Add Tasks </string>
     <string name="set">Set Alarm !</string>

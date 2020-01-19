@@ -60,11 +60,12 @@
 
         <Switch
             android:id="@+id/switch1"
+            android:paddingRight="10dp"
             android:layout_width="wrap_content"
             android:scaleX="1.25"
             android:scaleY="1.25"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="290dp"
+            android:layout_alignParentRight="true"
             android:theme="@style/SwitchTheme"
             android:checked="true"
             android:layout_marginTop="40sp"/>

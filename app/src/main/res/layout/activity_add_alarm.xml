@@ -10,9 +10,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="70dp"
         android:background="@color/darkPeach"
-        android:minHeight="?attr/actionBarSize"
         android:padding="10dp"
         android:theme="?attr/actionBarTheme">
 
@@ -37,18 +36,17 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/destinationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="20sp"
-            android:layout_marginTop="15sp"
             android:fontFamily="@font/bad_script"
             android:text="@string/destination"
             android:textColor="#0E0E0D"
@@ -60,16 +58,17 @@
             android:layout_width="60sp"
             android:layout_height="60sp"
             android:background="@drawable/maps"
-            android:layout_marginLeft="125sp"
-            android:layout_marginTop="25sp"/>
+            android:layout_alignParentRight="true"
+            />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="137dp"
         android:orientation="horizontal"
+        android:padding="10dp"
         >
 
         <TextView
@@ -77,58 +76,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="20sp"
-            android:layout_marginTop="15sp"
             android:fontFamily="@font/bad_script"
             android:text="@string/time"
             android:textColor="#0E0E0D"
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="50sp"
             >
 
             <ImageButton
                 android:id="@+id/timeButton"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
-                android:layout_marginLeft="55sp"
-                android:layout_marginTop="25sp"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/time" />
 
             <TextView
                 android:id="@+id/timePicked"
-                android:layout_width="133dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_below="@id/timeButton"
                 android:fontFamily="cursive"
                 android:text="@string/pickedTime"
-                android:layout_marginLeft="10sp"
-                android:textAlignment="center"
+                android:textAlignment="gravity"
+                android:gravity="right"
                 android:textColor="#79796F"
                 android:textSize="30sp"
+                android:paddingRight="10dp"
                 android:textStyle="italic" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/repeatText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="20sp"
-            android:layout_marginTop="15sp"
             android:fontFamily="@font/bad_script"
             android:text="@string/repeat"
             android:textColor="#0E0E0D"
@@ -140,21 +135,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="55sp" />
-    </LinearLayout>
+            android:layout_below="@id/repeatText"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/tasksButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="190sp"
-            android:layout_marginTop="10sp"
+            android:layout_alignParentRight="true"
             android:backgroundTint="#E3ACA2"
             android:drawableRight="@drawable/plus"
             android:fontFamily="@font/bad_script"
@@ -163,19 +158,19 @@
             android:textColor="#0E0E0D"
             android:textSize="30sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="106dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/setButton"
-            android:layout_width="246dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="150sp"
+            android:layout_alignParentRight="true"
             android:drawableRight="@drawable/clock"
             android:backgroundTint="#E9B6A5"
             android:fontFamily="@font/bad_script"
@@ -184,5 +179,5 @@
             android:textColor="#0E0E0D"
             android:textSize="30sp" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

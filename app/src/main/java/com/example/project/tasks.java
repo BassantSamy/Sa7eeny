@@ -98,7 +98,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
                     }
                 }
                 if(addF==true) {
-                    userTasks.add(new Task("  "));
                     adapter.notifyDataSetChanged();
                 }
                 openDialog();
