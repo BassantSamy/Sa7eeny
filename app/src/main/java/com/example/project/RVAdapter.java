@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,18 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder>{
     private Context context;
     private List<listEntry> LEt;
+    private OnItemClickListener listener;
+
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+        void onSwitchClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
 
     public RVAdapter(Context context, List<listEntry> cartList) {
@@ -45,14 +59,34 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder>{
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView TV1, TV2;
+        public Switch aSwitch;
         public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             TV1 = itemView.findViewById(R.id.TV1);
             TV2 = itemView.findViewById(R.id.TV2);
+            aSwitch = itemView.findViewById(R.id.switch1);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        if(getAdapterPosition() != RecyclerView.NO_POSITION){
+                            listener.onItemClick(getAdapterPosition());
+                        }
+                    }
+                }
+            });
+
+            aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    listener.onSwitchClick(getAdapterPosition());
+                }
+            });
         }
     }
 

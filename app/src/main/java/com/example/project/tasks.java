@@ -3,17 +3,23 @@ package com.example.project;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +40,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     ImageButton btn;
     chCustomAdapter chadapter;
     CustomAdapter adapter;
-    Button set ;
+    ImageButton set ;
 
     TextView Suggested_title;
 
@@ -47,8 +53,12 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         Model m= new Model(getResources());
         list1= findViewById(R.id.lv_1);
         list2=findViewById(R.id.lv_2);
-        btn=findViewById(R.id.btn_img);
-        set = (Button) findViewById(R.id.btn_set);
+        final LayoutInflater factory = getLayoutInflater();
+        final View SLH = factory.inflate(R.layout.second_list_header, null);
+
+
+        set = findViewById(R.id.iconImage);
+        RelativeLayout lay = findViewById(R.id.RLid);
 
         Suggested_title=findViewById(R.id.title_1);
 
@@ -61,8 +71,14 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
             Log.d("da5alt",String.valueOf(Suggested.size()));
         }
 
+        View header = getLayoutInflater().inflate(R.layout.first_list_header, null);
+        View header2 = getLayoutInflater().inflate(R.layout.second_list_header, null);
+        btn = header2.findViewById(R.id.btn_img);
         chadapter= new chCustomAdapter(this, R.layout.checked_list_item,Suggested);
+        list1.addHeaderView(header);
+        list2.addHeaderView(header2, null, false);
         list1.setAdapter(chadapter);
+        //justifyListViewHeightBasedOnChildren(list1);
         list1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         userTasks= new ArrayList<>();
@@ -87,7 +103,8 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
                 startActivity(Set);
             }
         });
-//
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 boolean addF= true;
@@ -106,6 +123,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         });
 
 
+
         chadapter.setCheckedListener(this);
         adapter.setPressedListener(this);
     }
@@ -118,10 +136,22 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         // openDialog(position, 0);
         userTasks.add(new Task(Suggested.get(position).getName(),0,0));
         Suggested.remove(position);
+        list1.removeAllViewsInLayout();
         chadapter.notifyDataSetChanged();
         adapter.notifyDataSetChanged();
-        if(Suggested.isEmpty()==true)
-            Suggested_title.setVisibility(View.GONE);
+        int h = justifyListViewHeightBasedOnChildren(list1);
+        Log.d("height",String.valueOf(h));
+        if(Suggested.isEmpty()==true) {
+            if (h<=0) {
+                Log.d("height",String.valueOf(h));
+                RelativeLayout.LayoutParams mParam2 = new RelativeLayout.LayoutParams(0, 200);
+                list1.setLayoutParams(mParam2);
+            }else{
+                RelativeLayout.LayoutParams mParam = new RelativeLayout.LayoutParams(0, h);
+                list1.setLayoutParams(mParam);
+            }
+            chadapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -193,5 +223,27 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
             else
                 position++;
         }
+    }
+
+    public static int justifyListViewHeightBasedOnChildren (ListView listView) {
+
+        ListAdapter adapter = listView.getAdapter();
+
+        if (adapter == null) {
+            return 0;
+        }
+        ViewGroup vg = listView;
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, vg);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams par = listView.getLayoutParams();
+        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(par);
+        listView.requestLayout();
+        return par.height;
     }
 }

@@ -97,7 +97,6 @@ public class CustomAdapter extends ArrayAdapter<Task>{
 
         return row;
     }
-
     public void setPressedListener(imageClick pressedListener)
     {
         this.pressListener=pressedListener;
