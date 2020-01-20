@@ -7,6 +7,8 @@
     <string name="days">days</string>
     <string name="tasks">Add Tasks </string>
     <string name="set">Set Alarm !</string>
+    <string name="api">AIzaSyB1J-wZ5DcCf2OBScVh3u4wpCKcxfmojPQ</string>
+
 
     <string-array name="SuggestedTasks">
         <item>Grab Coffee</item>
