@@ -7,13 +7,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
+public class GetNearbyPlacesData extends AsyncTask<Object, String, String> implements GoogleMap.OnMarkerClickListener
+{
 
 
     private String googlePlacesData;
@@ -37,6 +39,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName + " : "+ vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
+            mMap.setOnMarkerClickListener(this);
             mMap.addMarker(markerOptions);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
@@ -60,6 +63,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     }
 
+
     @Override
     protected void onPostExecute(String s) {
 
@@ -69,4 +73,12 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         Log.d("nearbyplacesdata","called parse method");
         showNearbyPlaces(nearbyPlaceList);
     }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        MapsActivity.end_latitude = marker.getPosition().latitude ;
+                MapsActivity.end_longitude=marker.getPosition().longitude;
+        return false;
+    }
 }
+

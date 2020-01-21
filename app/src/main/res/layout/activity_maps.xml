@@ -4,9 +4,10 @@
 
 <RelativeLayout
 
-android:layout_width="match_parent"
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent">
+
 
 
     <EditText
@@ -20,6 +21,7 @@ android:layout_height="match_parent">
         android:hint="Search Location"
         android:inputType="textPersonName" />
 
+
     <Button
         android:id="@+id/B_search"
         android:layout_width="140dp"
@@ -29,16 +31,16 @@ android:layout_height="match_parent">
         android:onClick="onClick"
         android:text="Search" />
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    android:layout_width="match_parent"
-    android:layout_height="560dp"
-    tools:context=".MapsActivity"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentBottom="true"/>
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="560dp"
+        tools:context=".MapsActivity"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"/>
 
     <Button
         android:id="@+id/B_cafe"
@@ -58,6 +60,22 @@ android:layout_height="match_parent">
         android:onClick="onClick"
         android:text="Bakeries" />
 
+    <Button
+        android:id="@+id/B_gym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TF_location"
+        android:layout_toEndOf="@+id/B_bakery"
+        android:onClick="onClick"
+        android:text="Gyms" />
 
+    <Button
+        android:id="@+id/B_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/B_gym"
+        android:layout_toEndOf="@+id/B_gym"
+        android:onClick="onClick"
+        android:text="To" />
 
 </RelativeLayout>

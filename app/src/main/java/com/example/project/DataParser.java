@@ -87,4 +87,49 @@ public class DataParser {
     }
 
 
+    private HashMap<String,String> getDuration(JSONObject googleDirectionsJson)
+    {
+        HashMap<String,String> googleDirectionsMap = new HashMap<>();
+        String duration = "";
+        String distance ="";
+
+
+        try {
+
+            distance = googleDirectionsJson.getString("lengthInMeters");
+            duration = googleDirectionsJson.getString("travelTimeInSeconds");
+
+            googleDirectionsMap.put("duration" , duration);
+            googleDirectionsMap.put("distance", distance);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return googleDirectionsMap;
+    }
+
+    public HashMap<String,String> parseDirections(String jsonData)
+    {
+        JSONArray jsonArray = null;
+        JSONObject jsonObject = null;
+        JSONObject tomtom = null;
+
+
+        try {
+            jsonObject = new JSONObject(jsonData);
+           // jsonArray = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs"); //routes array
+            tomtom = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONObject("summary"); //routes array
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return getDuration(tomtom);
+
+    }
+
+
+
 }

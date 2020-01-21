@@ -14,8 +14,12 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,19 +35,28 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener ,
-        LocationListener {
+        LocationListener ,
+        GoogleMap.OnMarkerClickListener ,
+        GoogleMap.OnMarkerDragListener
+{
 
     EditText tf_location;
-
     private GoogleMap mMap;
     private GoogleApiClient client ;
     private LocationRequest locationRequest;
@@ -52,14 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     int PROXIMITY_RADIUS = 10000;
     double latitude,longitude;
-
-
+    static double end_latitude, end_longitude;
+    static String destinationDuration, destinationDistance;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -71,6 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     protected synchronized void buildGoogleApiClient()
@@ -83,6 +98,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         client.connect();
     }
+
+
 
     public void onClick(View v)
     {
@@ -110,6 +127,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LatLng latLng = new LatLng(myAddress.getLatitude(), myAddress.getLongitude());
                                 mo.position(latLng);
                                 mo.title("Your Search Result");
+
+                                float results[] = new float[10];
+                                end_latitude = myAddress.getLatitude() ;
+                                end_longitude=  myAddress.getLongitude();
+                                //Location.distanceBetween(latitude,longitude, myAddress.getLatitude(), myAddress.getLongitude() , results);
+
+                                mo.snippet("Click To Button to make this your destination");
+
                                 mMap.addMarker(mo);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -133,23 +158,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
 
             case R.id.B_bakery:
+            mMap.clear();
+            String bakery = "bakery";
+            url = getUrl(latitude, longitude, bakery);
+            dataTransfer[0] = mMap;
+            dataTransfer[1] = url;
+
+            getNearbyPlacesData.execute(dataTransfer);
+            Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
+            break;
+
+            case R.id.B_gym:
                 mMap.clear();
-                String bakery = "bakery";
-                url = getUrl(latitude, longitude, bakery);
+                String gym = "gym";
+                url = getUrl(latitude, longitude, gym);
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
 
                 getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "Showing Nearby Gyms", Toast.LENGTH_SHORT).show();
                 break;
+
+
+            case R.id.B_to:
+
+                /////Get Duration/////
+                dataTransfer = new Object[3];
+                url = getDirectionsUrl();
+                GetDirectionsData getDirectionsData = new GetDirectionsData();
+                dataTransfer[0] = mMap;
+                dataTransfer[1] = url;
+                dataTransfer[2] = new LatLng(end_latitude, end_longitude);
+                getDirectionsData.execute(dataTransfer);
 
 
         }
 
     }
 
+    private String getDirectionsUrl()
+    {
+
+        int versionNumber = 1;
+        //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+        StringBuilder googleDirectionsUrl = new StringBuilder("https://api.tomtom.com/routing/");
+        googleDirectionsUrl.append(versionNumber+"/calculateRoute/");
+        googleDirectionsUrl.append(latitude+","+longitude);
+        googleDirectionsUrl.append(":"+end_latitude+","+end_longitude);
+        googleDirectionsUrl.append("/json?");
+        googleDirectionsUrl.append("avoid=unpavedRoads&key="+"Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+
+        Log.d("MapsActivity", "Directionsurl = "+googleDirectionsUrl.toString());
+
+
+        return googleDirectionsUrl.toString();
+    }
+
+
     private String getUrl(double latitude , double longitude , String nearbyPlace)
     {
+
+        //https://maps.googleapis.com/maps/api/place/search/json?location=30.0197715,31.5002467&radius=10000&type=bakery&sensor=true&key=AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0
 
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/search/json?");
         googlePlaceUrl.append("location="+latitude+","+longitude);
@@ -158,7 +227,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googlePlaceUrl.append("&sensor=true");
         googlePlaceUrl.append("&key="+"AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0");
 
-        Log.d("MapsActivity", "url = "+googlePlaceUrl.toString());
+        Log.d("MapsActivity", "Nearurl = "+googlePlaceUrl.toString());
 
         return googlePlaceUrl.toString();
     }
@@ -206,14 +275,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        buildGoogleApiClient();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
 
+        mMap.setOnMarkerDragListener(this);
+        mMap.setOnMarkerClickListener(this);
 
     }
 
@@ -259,6 +335,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         markerOptions.position(latLng);
         markerOptions.title("Current Location");
+        markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         currentLocationmMarker = mMap.addMarker(markerOptions);
 
@@ -295,4 +372,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.setDraggable(true);
+        return false;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
+        end_latitude = marker.getPosition().latitude;
+        end_longitude =  marker.getPosition().longitude;
+
+        Log.d("end_lat",""+end_latitude);
+        Log.d("end_lng",""+end_longitude);
+
+    }
 }
