@@ -88,7 +88,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         list2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openDialog(position,1);
+                openDialog(position-1,1);
                 Log.d("hna", "msh sha3'al leih");
 //                Toast toast =new Toast(getApplicationContext());
 //                toast.makeText(getApplicationContext(),"why you not working", Toast.LENGTH_LONG).show();
