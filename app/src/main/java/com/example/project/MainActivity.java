@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     listEntry LE;
     ImageView iv;
     TextView addAlarm;
+    Switch aSwitch;
     ImageButton imgBtn ;
 
     @Override
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         alarms = getResources().getStringArray(R.array.alarms);
         ampm = getResources().getStringArray(R.array.ampm);
         rootLayout = findViewById(R.id.root);
+        aSwitch = findViewById(R.id.switch1);
 
         LET = new ArrayList<listEntry>();
 
@@ -70,18 +73,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         RV.setAdapter(adapter);
         Disp(LET);
 
-        RV.addOnItemTouchListener(
-            new RecyclerItemClickListener(getApplicationContext(), RV ,new RecyclerItemClickListener.OnItemClickListener() {
-                @Override public void onItemClick(View view, int position) {
-                    Intent editIntent = new Intent(getApplicationContext(),AddAlarm.class);
-                    startActivity(editIntent);
-                }
+        adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent editIntent = new Intent(getApplicationContext(),AddAlarm.class);
+                startActivity(editIntent);
+            }
 
-                @Override public void onLongItemClick(View view, int position) {
-                    // do whatever
-                }
-            })
-        );
+            @Override
+            public void onSwitchClick(int position) {
+
+            }
+        });
 
 
         imgBtn.setOnClickListener(new View.OnClickListener() {

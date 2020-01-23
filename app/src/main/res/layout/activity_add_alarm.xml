@@ -1,98 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical" >
+    android:fillViewport="true">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/darkPeach"
-        android:padding="10dp"
-        android:theme="?attr/actionBarTheme">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Sa7eeny"
-            android:textColor="@color/black"
-            android:textSize="25dp" />
-
-        <ImageView
-            android:id="@+id/iconImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo" />
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical" >
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/darkPeach"
+            android:padding="10dp"
+            android:theme="?attr/actionBarTheme">
 
-        <TextView
-            android:id="@+id/destinationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/bad_script"
-            android:text="@string/destination"
-            android:textColor="#0E0E0D"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Sa7eeny"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
 
-        <ImageButton
-            android:id="@+id/mapsButton"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
-            android:background="@drawable/maps"
-            android:layout_alignParentRight="true"
-            />
+            <ImageView
+                android:id="@+id/iconImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo" />
+        </androidx.appcompat.widget.Toolbar>
 
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="137dp"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        >
-
-        <TextView
-            android:id="@+id/timeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/bad_script"
-            android:text="@string/time"
-            android:textColor="#0E0E0D"
-            android:textSize="30sp"
-            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/destinationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/bad_script"
+                android:text="@string/destination"
+                android:textColor="#0E0E0D"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/mapsButton"
+                android:layout_width="60sp"
+                android:layout_height="60sp"
+                android:background="@drawable/maps"
+                android:layout_alignParentRight="true"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
             >
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/bad_script"
+                android:text="@string/time"
+                android:textColor="#0E0E0D"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
 
             <ImageButton
                 android:id="@+id/timeButton"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_alignParentRight="true"
+                android:paddingRight="7dp"
                 android:background="@drawable/time" />
 
             <TextView
@@ -100,84 +102,83 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/timeButton"
-                android:fontFamily="cursive"
+                android:fontFamily="@font/amita"
                 android:text="@string/pickedTime"
-                android:textAlignment="gravity"
-                android:gravity="right"
                 android:textColor="#79796F"
-                android:textSize="30sp"
-                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:gravity="end"
                 android:textStyle="italic" />
+
+
         </RelativeLayout>
 
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <TextView
-            android:id="@+id/repeatText"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/bad_script"
-            android:text="@string/repeat"
-            android:textColor="#0E0E0D"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/repeatText"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/repeatText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/bad_script"
+                android:text="@string/repeat"
+                android:textColor="#0E0E0D"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:orientation="horizontal"
-        android:padding="10dp">
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/repeatText"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/tasksButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:backgroundTint="#E3ACA2"
-            android:drawableRight="@drawable/plus"
-            android:fontFamily="@font/bad_script"
-            android:text="@string/tasks"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#0E0E0D"
-            android:textSize="30sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/tasksButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="#E3ACA2"
+                android:drawableRight="@drawable/plus"
+                android:fontFamily="@font/bad_script"
+                android:text="@string/tasks"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#0E0E0D"
+                android:textSize="30sp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="106dp"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/setButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:drawableRight="@drawable/clock"
-            android:backgroundTint="#E9B6A5"
-            android:fontFamily="@font/bad_script"
-            android:text="@string/set"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#0E0E0D"
-            android:textSize="30sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    </RelativeLayout>
-</LinearLayout>
+            <Button
+                android:id="@+id/setButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:drawableRight="@drawable/clock"
+                android:backgroundTint="#E9B6A5"
+                android:fontFamily="@font/bad_script"
+                android:text="@string/set"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#0E0E0D"
+                android:textSize="30sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
