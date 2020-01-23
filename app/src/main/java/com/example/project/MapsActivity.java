@@ -40,7 +40,10 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener ,
-        LocationListener {
+        LocationListener ,
+        GoogleMap.OnMarkerClickListener ,
+        GoogleMap.OnMarkerDragListener
+{
 
     EditText tf_location;
 
@@ -52,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     int PROXIMITY_RADIUS = 10000;
     double latitude,longitude;
+    double end_latitude, end_longitude;
+
 
 
 
@@ -110,6 +115,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LatLng latLng = new LatLng(myAddress.getLatitude(), myAddress.getLongitude());
                                 mo.position(latLng);
                                 mo.title("Your Search Result");
+
+                                float results[] = new float[10];
+                                Location.distanceBetween(latitude,longitude, myAddress.getLatitude(), myAddress.getLongitude() , results);
+
+                                mo.snippet("Distance= "+results[0]);
+
                                 mMap.addMarker(mo);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -133,15 +144,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
 
             case R.id.B_bakery:
+            mMap.clear();
+            String bakery = "bakery";
+            url = getUrl(latitude, longitude, bakery);
+            dataTransfer[0] = mMap;
+            dataTransfer[1] = url;
+
+            getNearbyPlacesData.execute(dataTransfer);
+            Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
+            break;
+
+            case R.id.B_gym:
                 mMap.clear();
-                String bakery = "bakery";
-                url = getUrl(latitude, longitude, bakery);
+                String gym = "gym";
+                url = getUrl(latitude, longitude, gym);
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
 
                 getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "Showing Nearby Gyms", Toast.LENGTH_SHORT).show();
                 break;
+
+
+            case R.id.B_to:
+                mMap.clear();
+                MarkerOptions markerOptions= new MarkerOptions();
+                markerOptions.position(new LatLng(end_latitude,end_longitude));
+                markerOptions.title("Destination");
+                markerOptions.draggable(true);
+
+                float results[] = new float[10];
+                Location.distanceBetween(latitude,longitude, end_latitude, end_longitude, results);
+
+                markerOptions.snippet("Distance= "+results[0]);
+                mMap.addMarker(markerOptions);
+                break;
+
+                //dataTransfer = new Object[3];
+                //url = getDirectionsUrl();
+                //GetDirectionsData getDirectionsData = new GetDirectionsData();
+                //dataTransfer[0] = mMap;
+                //dataTransfer[1] = url;
+                //dataTransfer[2] = new LatLng(end_latitude, end_longitude);
+                //getDirectionsData.execute(dataTransfer);
 
 
         }
@@ -151,12 +196,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getUrl(double latitude , double longitude , String nearbyPlace)
     {
 
+        //https://maps.googleapis.com/maps/api/place/search/json?location=30.0197715,31.5002467&radius=10000&type=bakery&sensor=true&key=AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0
+
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/search/json?");
         googlePlaceUrl.append("location="+latitude+","+longitude);
         googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
         googlePlaceUrl.append("&type="+nearbyPlace);
         googlePlaceUrl.append("&sensor=true");
-        googlePlaceUrl.append("&key="+"AIzaSyB1J-wZ5DcCf2OBScVh3u4wpCKcxfmojPQ");  //here
+        googlePlaceUrl.append("&key="+"AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0");
 
         Log.d("MapsActivity", "url = "+googlePlaceUrl.toString());
 
@@ -206,14 +253,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        buildGoogleApiClient();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
 
+        mMap.setOnMarkerDragListener(this);
+        mMap.setOnMarkerClickListener(this);
 
     }
 
@@ -259,6 +313,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         markerOptions.position(latLng);
         markerOptions.title("Current Location");
+        markerOptions.draggable(true);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         currentLocationmMarker = mMap.addMarker(markerOptions);
 
@@ -295,4 +350,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.setDraggable(true);
+        return false;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
+        end_latitude = marker.getPosition().latitude;
+        end_longitude =  marker.getPosition().longitude;
+
+        Log.d("end_lat",""+end_latitude);
+        Log.d("end_lng",""+end_longitude);
+
+    }
 }

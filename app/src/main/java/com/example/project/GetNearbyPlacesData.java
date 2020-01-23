@@ -70,3 +70,4 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         showNearbyPlaces(nearbyPlaceList);
     }
 }
+
