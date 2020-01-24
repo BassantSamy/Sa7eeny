@@ -83,15 +83,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/minusic"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="10dp"
-
         android:background="#00000000"
-        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@id/mapsButton"
         android:layout_marginLeft="10dp"
 
         ></ImageButton>
+
+    <ImageButton
+        android:id="@+id/mapsButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/maps" />
 
 
 </RelativeLayout>

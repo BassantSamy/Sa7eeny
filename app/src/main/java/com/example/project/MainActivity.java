@@ -27,6 +27,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
+
     private RecyclerView RV;
     private List<listEntry> LET;
     private RVAdapter adapter;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String setTime="";
     String setHours;
     String setMinutes;
+    static ArrayList toList = new ArrayList<LatLng>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

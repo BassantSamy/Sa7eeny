@@ -60,6 +60,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             @Override
             public void onClick(View v) {
                 Intent Maps = new Intent(getApplicationContext(), MapsActivity.class);
+                Maps.putExtra("name", "none");
                 startActivity(Maps);
             }
         });

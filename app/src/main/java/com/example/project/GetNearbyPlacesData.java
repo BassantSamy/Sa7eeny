@@ -30,13 +30,13 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> imple
             HashMap<String, String> googlePlace = nearbyPlaceList.get(i);
 
             String placeName = googlePlace.get("place_name");
-            String vicinity = googlePlace.get("vicinity");
+            //String vicinity = googlePlace.get("vicinity");
             double lat = Double.parseDouble( googlePlace.get("lat"));
             double lng = Double.parseDouble( googlePlace.get("lng"));
 
             LatLng latLng = new LatLng( lat, lng);
             markerOptions.position(latLng);
-            markerOptions.title(placeName + " : "+ vicinity);
+            markerOptions.title(placeName);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
             mMap.setOnMarkerClickListener(this);

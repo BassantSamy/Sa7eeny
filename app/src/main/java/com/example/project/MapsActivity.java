@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +47,13 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GoogleMap.OnMarkerDragListener
 {
 
+
     EditText tf_location;
     private GoogleMap mMap;
     private GoogleApiClient client ;
@@ -63,16 +73,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastlocation;
     private Marker currentLocationmMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
-    int PROXIMITY_RADIUS = 10000;
     double latitude,longitude;
     static double end_latitude, end_longitude;
     static String destinationDuration, destinationDistance;
+    AutoCompleteTextView autoCompleteTextView;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -85,6 +99,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        autoCompleteTextView=findViewById(R.id.TF_location);
+        autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(MapsActivity.this,android.R.layout.simple_list_item_1));
+
 
     }
 
@@ -111,8 +129,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch(v.getId())
         {
             case R.id.B_search:
-                tf_location = findViewById(R.id.TF_location);
-                String location = tf_location.getText().toString();
+               // tf_location = findViewById(R.id.TF_location);
+                String location = autoCompleteTextView.getText().toString();
                 List<Address> addressList;
                 MarkerOptions mo = new MarkerOptions();
 
@@ -146,54 +164,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 break;
 
-            case R.id.B_cafe:
-                mMap.clear();
-                String cafe = "cafe";
-                String url = getUrl(latitude, longitude, cafe);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Coffee Shops", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.B_bakery:
-            mMap.clear();
-            String bakery = "bakery";
-            url = getUrl(latitude, longitude, bakery);
-            dataTransfer[0] = mMap;
-            dataTransfer[1] = url;
-
-            getNearbyPlacesData.execute(dataTransfer);
-            Toast.makeText(MapsActivity.this, "Showing Nearby Bakeries", Toast.LENGTH_SHORT).show();
-            break;
-
-            case R.id.B_gym:
-                mMap.clear();
-                String gym = "gym";
-                url = getUrl(latitude, longitude, gym);
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-
-                getNearbyPlacesData.execute(dataTransfer);
-                Toast.makeText(MapsActivity.this, "Showing Nearby Gyms", Toast.LENGTH_SHORT).show();
-                break;
-
 
             case R.id.B_to:
 
                 /////Get Duration/////
                 dataTransfer = new Object[3];
-                url = getDirectionsUrl();
+                String url = getDirectionsUrl();
                 GetDirectionsData getDirectionsData = new GetDirectionsData();
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
                 dataTransfer[2] = new LatLng(end_latitude, end_longitude);
                 getDirectionsData.execute(dataTransfer);
+                MainActivity.toList.add(new LatLng(end_latitude, end_longitude));
+
+                break ;
 
 
         }
 
+    }
+
+
+    private void B_generic(String name)
+    {
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
+        mMap.clear();
+        Object dataTransfer[] = new Object[2];
+
+        String url = getUrl(latitude, longitude, name);
+        dataTransfer[0] = mMap;
+        dataTransfer[1] = url;
+
+        getNearbyPlacesData.execute(dataTransfer);
+        Toast.makeText(MapsActivity.this, "Showing Nearby "+name+"s", Toast.LENGTH_SHORT).show();
     }
 
     private String getDirectionsUrl()
@@ -217,19 +221,89 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String getUrl(double latitude , double longitude , String nearbyPlace)
     {
+        //https://api.tomtom.com/search/2/nearbySearch/.JSON?key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy&lat=30.0368938&lon=31.4794608&categorySet=7315
+        // 'https://api.tomtom.com/search/2/nearbySearch/.JSON?key=<Your_API_Key>&lat=<lat>&lon=<lon>&categories=<mapcodes>
+        StringBuilder googlePlaceUrl = new StringBuilder("https://api.tomtom.com/search/2/nearbySearch/.JSON?key=");
+        googlePlaceUrl.append("Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+        googlePlaceUrl.append("&lat="+latitude);
+        googlePlaceUrl.append("&lon="+longitude);
+        String cat = getCategorySet(nearbyPlace);
+        googlePlaceUrl.append("&categorySet="+cat);
 
-        //https://maps.googleapis.com/maps/api/place/search/json?location=30.0197715,31.5002467&radius=10000&type=bakery&sensor=true&key=AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0
-
-        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/search/json?");
-        googlePlaceUrl.append("location="+latitude+","+longitude);
-        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
-        googlePlaceUrl.append("&type="+nearbyPlace);
-        googlePlaceUrl.append("&sensor=true");
-        googlePlaceUrl.append("&key="+"AIzaSyCODkI7zH06f_c5JFzJxv_MRtAS2TMxPW0");
 
         Log.d("MapsActivity", "Nearurl = "+googlePlaceUrl.toString());
 
         return googlePlaceUrl.toString();
+    }
+
+    String getCategorySet (String nearbyPlace)
+    {
+        String googlePlacesData;
+        JSONObject jsonObject;
+        String id = null;
+
+        googlePlacesData = loadJSONFromAsset(getApplicationContext());
+
+        try {
+            jsonObject =getCategoryId (nearbyPlace ,  googlePlacesData);
+            if (jsonObject!= null)
+            id = jsonObject.getString("id")   ;
+            else id= "";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return id;
+        
+    }
+
+    public String loadJSONFromAsset(Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open("categories");
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
+    }
+
+    JSONObject getCategoryId (String search , String json) throws JSONException {
+        String name;
+        JSONObject searchObject = null;
+        JSONObject currObject;
+
+        JSONObject all = new JSONObject(json);
+        JSONArray array = all.getJSONArray("poiCategories");
+
+
+        for (int i = 0; i < array.length(); i++) {
+            currObject = array.getJSONObject(i);
+            name = currObject.getString("name");
+            name = name.replace("\n", "");
+
+            if(name.equals(search))
+            {
+                searchObject = currObject;
+                return searchObject;
+
+
+            }
+        }
+
+        return searchObject;
     }
 
 
@@ -291,6 +365,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerDragListener(this);
         mMap.setOnMarkerClickListener(this);
 
+
     }
 
 
@@ -348,6 +423,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LocationServices.FusedLocationApi.removeLocationUpdates(client,this);
         }
 
+
+        /////////////////////////
+        Intent in = getIntent();
+        Bundle extras = in.getExtras();
+        String type= extras.getString("name");
+
+        String lastWord = type.substring(type.lastIndexOf(" ")+1);
+        lastWord =lastWord.toLowerCase();
+
+
+        if (!type.equals("none"))
+        {
+
+            B_generic(lastWord);
+
+        }
 
     }
 

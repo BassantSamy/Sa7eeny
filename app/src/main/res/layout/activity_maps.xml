@@ -9,17 +9,23 @@
     android:layout_height="match_parent">
 
 
-
-    <EditText
-        android:id="@+id/TF_location"
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription=" "
-        android:ems="10"
+    <AutoCompleteTextView
         android:hint="Search Location"
-        android:inputType="textPersonName" />
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/TF_location" />
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/TF_location"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="45dp"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:contentDescription=" "-->
+<!--        android:ems="10"-->
+<!--        android:hint="Search Location"-->
+<!--        android:inputType="textPersonName" />-->
 
 
     <Button
@@ -42,39 +48,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"/>
 
-    <Button
-        android:id="@+id/B_cafe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/TF_location"
-        android:onClick="onClick"
-        android:text="Coffee Shops" />
 
-    <Button
-        android:id="@+id/B_bakery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TF_location"
-        android:layout_toEndOf="@+id/B_cafe"
-        android:onClick="onClick"
-        android:text="Bakeries" />
-
-    <Button
-        android:id="@+id/B_gym"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TF_location"
-        android:layout_toEndOf="@+id/B_bakery"
-        android:onClick="onClick"
-        android:text="Gyms" />
 
     <Button
         android:id="@+id/B_to"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/B_gym"
-        android:layout_toEndOf="@+id/B_gym"
+        android:layout_below="@+id/TF_location"
+        android:layout_alignParentRight="true"
         android:onClick="onClick"
         android:text="To" />
 

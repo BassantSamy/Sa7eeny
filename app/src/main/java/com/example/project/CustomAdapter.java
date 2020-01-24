@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.common.collect.Maps;
 
 import org.w3c.dom.Text;
 
@@ -45,6 +48,8 @@ public class CustomAdapter extends ArrayAdapter<Task>{
         TextView duration_hr_text;
         TextView txt_min;
         ImageButton img_btn;
+        ImageButton mapsbtn;
+
 
         MyViewHolder_c(View v)
         {
@@ -52,6 +57,8 @@ public class CustomAdapter extends ArrayAdapter<Task>{
             duration_hr_text=v.findViewById(R.id.duration_hr_text);
             txt_min=v.findViewById(R.id.txt_min);
             img_btn=v.findViewById(R.id.btn_img_2);
+            mapsbtn=v.findViewById(R.id.mapsButton);
+
         }
     }
 
@@ -92,6 +99,23 @@ public class CustomAdapter extends ArrayAdapter<Task>{
                 if(pressListener!=null) {
                     pressListener.getPressedListener(position);
                 }
+            }
+        });
+
+        holder.mapsbtn.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String name = t.get(position).getName();
+                String lastWord = name.substring(name.lastIndexOf(" ")+1);
+                lastWord = lastWord.toLowerCase();
+
+
+
+
+                Intent Maps = new Intent(getContext(), MapsActivity.class);
+                Maps.putExtra("name", name);
+                ctx.startActivity(Maps);
             }
         });
 

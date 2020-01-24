@@ -11,9 +11,9 @@
 
 
     <string-array name="SuggestedTasks">
-        <item>Grab Coffee</item>
+        <item>Go to Cafe</item>
         <item>Go to the Gym</item>
-        <item>Grab Breakfast</item>
+        <item>Go to Bakery</item>
     </string-array>
 
 

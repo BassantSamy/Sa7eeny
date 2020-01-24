@@ -12,42 +12,29 @@ import java.util.List;
 
 public class DataParser {
 
-    private HashMap<String, String> getPlace(JSONObject googlePlaceJson)
-    {
+    private HashMap<String, String> getPlace(JSONObject googlePlaceJson) throws JSONException {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
         String placeName = "-NA-";
-        String vicinity= "-NA-";
+        String vicinity= "-NA-"; //address
         String latitude= "";
         String longitude="";
         String reference="";
 
+        placeName= googlePlaceJson.getJSONObject("poi").getString("name");
+        latitude= googlePlaceJson.getJSONObject("position").getString("lat");
+        longitude=googlePlaceJson.getJSONObject("position").getString("lon");
+
+
+
         Log.d("DataParser","jsonobject ="+googlePlaceJson.toString());
 
 
-        try {
-            if (!googlePlaceJson.isNull("name")) {
-                placeName = googlePlaceJson.getString("name");
-            }
-            if (!googlePlaceJson.isNull("vicinity")) {
-                vicinity = googlePlaceJson.getString("vicinity");
-            }
-
-            latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
-
-            reference = googlePlaceJson.getString("reference");
-
             googlePlaceMap.put("place_name", placeName);
-            googlePlaceMap.put("vicinity", vicinity);
+            //googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
-            googlePlaceMap.put("reference", reference);
+            //googlePlaceMap.put("reference", reference);
 
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
         return googlePlaceMap;
 
     }
