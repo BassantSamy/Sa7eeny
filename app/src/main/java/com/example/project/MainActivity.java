@@ -12,10 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,7 +29,9 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
@@ -39,7 +45,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     ImageView iv;
     TextView addAlarm;
     Switch aSwitch;
-    ImageButton imgBtn ;
+    ImageButton imgBtn;
+    String setTime="";
+    String setHours;
+    String setMinutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +64,32 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         ampm = getResources().getStringArray(R.array.ampm);
         rootLayout = findViewById(R.id.root);
         aSwitch = findViewById(R.id.switch1);
-
         LET = new ArrayList<listEntry>();
-
-        for (int i = 0; i < alarms.length; i++) {
-            LE = new listEntry(alarms[i], ampm[i]);
+        Intent first = getIntent();
+        if(first.getExtras() != null){
+            setHours = getIntent().getExtras().getString("hours");
+            setMinutes = getIntent().getExtras().getString("minutes");
+            Calendar cal = Calendar.getInstance();
+            Log.d("hour",setHours);
+            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(setHours));
+            cal.set(Calendar.MINUTE, Integer.parseInt(setMinutes));
+            cal.set(Calendar.SECOND, 0);
+            UpdateTime(cal);
+            setAlarm(cal);
+            LE = new listEntry(setTime, "am");
             LET.add(LE);
         }
+
+
+
+//        for (int i = 0; i < alarms.length; i++) {
+//            LE = new listEntry(alarms[i], ampm[i]);
+//            LET.add(LE);
+//        }
         adapter = new RVAdapter(this, LET);
         RecyclerView.LayoutManager LM = new LinearLayoutManager(this);
         RV.setLayoutManager(LM);
         RV.setItemAnimator(new DefaultItemAnimator());
-        //RV.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         ItemTouchHelper.SimpleCallback ITH = new RecyclerItemTouchHelper(0,ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(ITH).attachToRecyclerView(RV);
@@ -85,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
 
             }
         });
-
 
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,4 +152,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         }
     }
 
+    private void UpdateTime(Calendar c) {
+
+        setTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+    }
+
+    private void setAlarm(Calendar c) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        if (c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
+        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, Notifications.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        //mTextView.setText("Alarm canceled");
+    }
 }
