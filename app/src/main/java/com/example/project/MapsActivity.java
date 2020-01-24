@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     EditText tf_location;
-    private GoogleMap mMap;
+    static GoogleMap mMap;
     private GoogleApiClient client ;
     private LocationRequest locationRequest;
     private Location lastlocation;
@@ -77,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static double end_latitude, end_longitude;
     static String destinationDuration, destinationDistance;
     AutoCompleteTextView autoCompleteTextView;
+    int tSec = 0 ;
 
 
 
@@ -173,9 +174,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 GetDirectionsData getDirectionsData = new GetDirectionsData();
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
+                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
                 dataTransfer[2] = new LatLng(end_latitude, end_longitude);
                 getDirectionsData.execute(dataTransfer);
-                MainActivity.toList.add(new LatLng(end_latitude, end_longitude));
+
+                Intent in = getIntent();
+                Bundle extras = in.getExtras();
+                tSec = extras.getInt("time");
+
+                toEntry entry = new toEntry(tSec , new LatLng(end_latitude, end_longitude) );
+                MainActivity.toList.add(entry);
 
                 break ;
 
@@ -397,6 +406,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+
         lastlocation = location;
 
         if(currentLocationmMarker != null)
@@ -437,6 +447,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
 
             B_generic(lastWord);
+
+        }
+        else
+        {
+            toEntry entry = new toEntry(0 , new LatLng(latitude, longitude) );
+            MainActivity.toList.add(entry);
 
         }
 

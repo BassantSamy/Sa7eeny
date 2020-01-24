@@ -33,7 +33,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     ListView list2;
 
     List<Task> Suggested;
-    List<Task> userTasks;
+    static List<Task> userTasks;
 
     String[] Suggested_arr;
 
@@ -89,7 +89,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openDialog(position-1,1);
-                Log.d("hna", "msh sha3'al leih");
 //                Toast toast =new Toast(getApplicationContext());
 //                toast.makeText(getApplicationContext(),"why you not working", Toast.LENGTH_LONG).show();
 //                toast.show();
@@ -99,6 +98,8 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkDuration chk= new checkDuration();
+                chk.execute();
                 Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
                 startActivity(Set);
             }

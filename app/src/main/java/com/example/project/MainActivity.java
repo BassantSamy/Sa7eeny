@@ -37,6 +37,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
+
     private RecyclerView RV;
     private List<listEntry> LET;
     private RVAdapter adapter;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String setTime="";
     String setHours;
     String setMinutes;
-    static ArrayList toList = new ArrayList<LatLng>();
+    static ArrayList <toEntry> toList = new ArrayList<toEntry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
