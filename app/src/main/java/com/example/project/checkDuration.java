@@ -49,7 +49,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
         LatLng current = toList.get(0).latLng;
         googleDirectionsUrl.append(current.latitude + "," + current.longitude);
         for (int i=1 ;i<toList.size() ;i++) {
-            tasks = toList.get(1).latLng;
+            tasks = toList.get(i).latLng;
             googleDirectionsUrl.append(":" + tasks.latitude + "," + tasks.longitude);
         }
         googleDirectionsUrl.append("/json?");
