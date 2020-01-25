@@ -34,6 +34,7 @@ import java.text.DateFormat;
 public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
     ImageButton mapsButton;
+    TextView errorText ;
     EditText timeReady ;
     ImageButton timeButton;
     TextView timePicked;
@@ -41,8 +42,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
     TextView textV ;
     Button setAlarm ;
     Button tasksButton;
-    int hours;
-    int minutes;
+    int hours = -1;
+    int minutes = -1;
     String setTime = "";
 
 
@@ -58,6 +59,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         setAlarm= (Button)findViewById(R.id.setButton);
         tasksButton = (Button) findViewById(R.id.tasksButton);
         timeReady = findViewById(R.id.getReadyInput);
+        errorText = findViewById(R.id.errorText);
 
 
 
@@ -87,23 +89,36 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         setAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Main = new Intent(getApplicationContext(), MainActivity.class);
+                if (MainActivity.toList.size()>=2 && hours!=-1 || minutes!=-1 ) {
+                    Intent Main = new Intent(getApplicationContext(), MainActivity.class);
 //                Log.d("hour",String.valueOf(hours));
-                Main.putExtra("hours", String.valueOf(hours));
-                Main.putExtra("minutes", String.valueOf(minutes));
-                toEntry entry = new toEntry(Integer.parseInt(setTime)*60, null );
-                MainActivity.toList.add(entry);
-                startActivity(Main);
+                    Main.putExtra("hours", String.valueOf(hours));
+                    Main.putExtra("minutes", String.valueOf(minutes));
+                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null);
+                    MainActivity.toList.add(entry);
+                    startActivity(Main);
+                }
+                else
+                {
+                    errorText.setText("Please Make Sure You Entered All Values");
+                }
+
             }
         });
 
         tasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
-                toEntry entry = new toEntry(Integer.parseInt(setTime)*60, null );
-                MainActivity.toList.add(entry);
-                startActivity(tasksPage);
+                if (MainActivity.toList.size()>=2 && hours!=-1 && minutes!=-1 ) {
+                    Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
+                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null);
+                    MainActivity.toList.add(entry);
+                    startActivity(tasksPage);
+                }
+                else
+                {
+                    errorText.setText("Please Make Sure You Entered All Values");
+                }
             }
         });
 
@@ -146,37 +161,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         timePicked.setText(hourOfDay + " :" + minute);
         hours = hourOfDay;
         minutes = minute;
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-//        cal.set(Calendar.MINUTE, minute);
-//        cal.set(Calendar.SECOND, 0);
-//        Log.d("onTimeSetH",String.valueOf(hours));
-//        Log.d("onTimeSetM",String.valueOf(minutes));
-//        UpdateTextView(cal);
-//        setAlarm(cal);
+
     }
 
-//    private void UpdateTextView(Calendar c) {
-//
-//        setTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
-//    }
-//
-//    private void setAlarm(Calendar c) {
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        Intent intent = new Intent(this, AlertReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-//        if (c.before(Calendar.getInstance())) {
-//            c.add(Calendar.DATE, 1);
-//        }
-//        Log.d("setAlarm",String.valueOf(c.getTimeInMillis()));
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-//    }
-//
-//    private void cancelAlarm() {
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(this, AlertReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-//        alarmManager.cancel(pendingIntent);
-//        //mTextView.setText("Alarm canceled");
-//    }
 }

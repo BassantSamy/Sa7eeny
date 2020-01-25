@@ -176,6 +176,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dataTransfer[1] = url;
                 //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
                 //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+
                 dataTransfer[2] = new LatLng(end_latitude, end_longitude);
                 getDirectionsData.execute(dataTransfer);
 
@@ -452,6 +453,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else
         {
             toEntry entry = new toEntry(0 , new LatLng(latitude, longitude) );
+            end_longitude= longitude;
+            end_latitude = latitude;
             MainActivity.toList.add(entry);
 
         }

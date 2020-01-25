@@ -60,5 +60,15 @@
         android:layout_marginRight="10dp"
         />
 
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/amita"
+        android:textColor="#F00808"
+        android:textSize="15sp"
+        android:textStyle="italic" />
 
 </RelativeLayout>

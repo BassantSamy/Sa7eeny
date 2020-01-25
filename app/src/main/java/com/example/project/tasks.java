@@ -31,6 +31,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
     ListView list1;
     ListView list2;
+    TextView errorText ;
 
     List<Task> Suggested;
     static List<Task> userTasks;
@@ -61,6 +62,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         RelativeLayout lay = findViewById(R.id.RLid);
 
         Suggested_title=findViewById(R.id.title_1);
+        errorText = findViewById(R.id.errorText);
 
 
         Suggested= new ArrayList<>();
@@ -98,10 +100,16 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkDuration chk= new checkDuration();
-                chk.execute();
-                Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
-                startActivity(Set);
+                if (MainActivity.toList.size()-3 == userTasks.size()) {
+                    checkDuration chk = new checkDuration();
+                    chk.execute();
+                    Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
+                    startActivity(Set);
+                }
+                else
+                {
+                    errorText.setText("Please Make Sure You Entered All Values");
+                }
             }
         });
 
