@@ -144,41 +144,63 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
+            <TextView
+            android:id="@+id/getReadyTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/bad_script"
+            android:text="@string/ready"
+            android:textColor="#0E0E0D"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/getReadyInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/getReadyTxt"
+                android:layout_marginRight="10dp"
+                android:hint="time in  minutes"
+                android:textAlignment="center"
+                />
+
+
+        </RelativeLayout>
+
             <Button
                 android:id="@+id/tasksButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:padding="10dp"
+                android:layout_below="@+id/getReady"
                 android:backgroundTint="#E3ACA2"
                 android:drawableRight="@drawable/plus"
                 android:fontFamily="@font/bad_script"
                 android:text="@string/tasks"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#0E0E0D"
-                android:textSize="30sp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="106dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
+                android:textSize="30sp"
+                tools:ignore="NotSibling" />
 
             <Button
                 android:id="@+id/setButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tasksButton"
+                android:padding="10dp"
+                android:layout_gravity="right"
                 android:drawableRight="@drawable/clock"
                 android:backgroundTint="#E9B6A5"
                 android:fontFamily="@font/bad_script"
                 android:text="@string/set"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="#0E0E0D"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                tools:ignore="NotSibling" />
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
     </LinearLayout>
 
 </ScrollView>

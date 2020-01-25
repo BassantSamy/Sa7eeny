@@ -11,14 +11,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +34,7 @@ import java.text.DateFormat;
 public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
 
     ImageButton mapsButton;
+    EditText timeReady ;
     ImageButton timeButton;
     TextView timePicked;
     static ArrayList<StateVO> listVOs;
@@ -37,7 +43,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
     Button tasksButton;
     int hours;
     int minutes;
-    String setTime;
+    String setTime = "";
 
 
 
@@ -51,6 +57,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         textV = findViewById(R.id.timeText);
         setAlarm= (Button)findViewById(R.id.setButton);
         tasksButton = (Button) findViewById(R.id.tasksButton);
+        timeReady = findViewById(R.id.getReadyInput);
+
 
 
         Resources res = getResources();
@@ -62,7 +70,6 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
                 Intent Maps = new Intent(getApplicationContext(), MapsActivity.class);
                 Maps.putExtra("name", "none");
                 Maps.putExtra("time", "0");
-
                 startActivity(Maps);
             }
         });
@@ -72,6 +79,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             public void onClick(View v) {
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(getSupportFragmentManager(), "time picker");
+
+
             }
         });
 
@@ -82,6 +91,8 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
 //                Log.d("hour",String.valueOf(hours));
                 Main.putExtra("hours", String.valueOf(hours));
                 Main.putExtra("minutes", String.valueOf(minutes));
+                toEntry entry = new toEntry(Integer.parseInt(setTime)*60, null );
+                MainActivity.toList.add(entry);
                 startActivity(Main);
             }
         });
@@ -90,9 +101,30 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             @Override
             public void onClick(View v) {
                 Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
+                toEntry entry = new toEntry(Integer.parseInt(setTime)*60, null );
+                MainActivity.toList.add(entry);
                 startActivity(tasksPage);
             }
         });
+
+        timeReady.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                setTime = s.toString() ;
+            }
+        });
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayList<StateVO> listVOs = new ArrayList<>();

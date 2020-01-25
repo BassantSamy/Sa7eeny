@@ -14,6 +14,8 @@ import static java.lang.Thread.sleep;
 
 public class checkDuration extends AsyncTask<String,Integer,Void> {
 
+    int totalDuration ;
+
     @SuppressLint("WrongThread")
     @Override
     protected Void doInBackground(String... strings) {
@@ -24,7 +26,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
             String url = getDirectionsUrl();
             String duration = getIncrement(url);
 
-            int totalDuration = appendUserTime(Integer.parseInt(duration));
+             totalDuration = appendUserTime(Integer.parseInt(duration));
 
 
 
@@ -46,11 +48,19 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
         //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
         StringBuilder googleDirectionsUrl = new StringBuilder("https://api.tomtom.com/routing/");
         googleDirectionsUrl.append(versionNumber+"/calculateRoute/");
-        LatLng current = toList.get(0).latLng;
-        googleDirectionsUrl.append(current.latitude + "," + current.longitude);
+
+        if (toList.get(0).latLng != null) {
+            LatLng current = toList.get(0).latLng;
+            googleDirectionsUrl.append(current.latitude + "," + current.longitude);
+        }
+
+
         for (int i=1 ;i<toList.size() ;i++) {
-            tasks = toList.get(i).latLng;
-            googleDirectionsUrl.append(":" + tasks.latitude + "," + tasks.longitude);
+            if (toList.get(i).latLng != null) {
+                tasks = toList.get(i).latLng;
+                googleDirectionsUrl.append(":" + tasks.latitude + "," + tasks.longitude);
+            }
+
         }
         googleDirectionsUrl.append("/json?");
         googleDirectionsUrl.append("avoid=unpavedRoads&key="+"Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
