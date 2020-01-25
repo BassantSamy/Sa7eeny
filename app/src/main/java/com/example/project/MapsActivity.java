@@ -78,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static String destinationDuration, destinationDistance;
     AutoCompleteTextView autoCompleteTextView;
     int tSec = 0 ;
+    String lastWord;
 
 
 
@@ -184,8 +185,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Bundle extras = in.getExtras();
                 tSec = extras.getInt("time");
 
-                toEntry entry = new toEntry(tSec , new LatLng(end_latitude, end_longitude) );
+                toEntry entry = new toEntry(tSec , new LatLng(end_latitude, end_longitude) , lastWord );
+                int index = repeated(lastWord);
+                if (index == -1)
                 MainActivity.toList.add(entry);
+                else
+                    MainActivity.toList.set(index, entry);
+
 
                 break ;
 
@@ -193,6 +199,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
+    int repeated (String id )
+    {
+        for (int i=0 ;i<MainActivity.toList.size() ;i++)
+        {
+            if (MainActivity.toList.get(i).id.equals(id))
+            {
+                return i ;
+            }
+        }
+        return -1 ;
+    }
+
 
 
     private void B_generic(String name)
@@ -440,7 +459,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle extras = in.getExtras();
         String type= extras.getString("name");
 
-        String lastWord = type.substring(type.lastIndexOf(" ")+1);
+        lastWord = type.substring(type.lastIndexOf(" ")+1);
         lastWord =lastWord.toLowerCase();
 
 
@@ -452,10 +471,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else
         {
-            toEntry entry = new toEntry(0 , new LatLng(latitude, longitude) );
+            toEntry entry = new toEntry(0 , new LatLng(latitude, longitude), "currentLocation" );
             end_longitude= longitude;
             end_latitude = latitude;
-            MainActivity.toList.add(entry);
+            int index = repeated("currentLocation");
+            if (index == -1) {
+                MainActivity.toList.add(entry);
+            }
+            else
+                MainActivity.toList.set(index, entry);
+            lastWord = "destination";
 
         }
 

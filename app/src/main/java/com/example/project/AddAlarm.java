@@ -94,7 +94,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
 //                Log.d("hour",String.valueOf(hours));
                     Main.putExtra("hours", String.valueOf(hours));
                     Main.putExtra("minutes", String.valueOf(minutes));
-                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null);
+                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
                     MainActivity.toList.add(entry);
                     startActivity(Main);
                 }
@@ -111,7 +111,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             public void onClick(View v) {
                 if (MainActivity.toList.size()>=2 && hours!=-1 && minutes!=-1 ) {
                     Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
-                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null);
+                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null , "readyTime");
                     MainActivity.toList.add(entry);
                     startActivity(tasksPage);
                 }
