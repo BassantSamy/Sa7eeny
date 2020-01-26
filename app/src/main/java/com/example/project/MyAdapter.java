@@ -84,4 +84,22 @@ public class MyAdapter extends ArrayAdapter<StateVO> {
         private TextView mTextView;
         private CheckBox mCheckBox;
     }
+
+    public String GetSelected(){
+
+        String Days="";
+
+        for(int i=1; i<listState.size(); i++){
+            if(listState.get(i).isSelected()==true)
+            {
+                Days+="1";
+            }
+            else {
+                Days+="0";
+            }
+        }
+
+        return Days;
+
+    }
 }

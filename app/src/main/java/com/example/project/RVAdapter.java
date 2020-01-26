@@ -25,7 +25,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder>{
     public interface OnItemClickListener {
         void onItemClick(int position);
 
-        void onSwitchClick(int position);
+        void onSwitchClick(int position, CompoundButton buttonView, boolean isChecked);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -49,7 +49,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder>{
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final listEntry item = LEt.get(position);
         holder.TV1.setText(item.getTime());
-        holder.TV2.setText(item.getAmpm());
+        //holder.TV2.setText(item.getAmpm());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.MyViewHolder>{
             aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    listener.onSwitchClick(getAdapterPosition());
+                    listener.onSwitchClick(getAdapterPosition(), buttonView, isChecked);
                 }
             });
         }

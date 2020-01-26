@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="112dp"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:id="@+id/notif_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/darkerPeach"
+        android:textAlignment="center"
+        android:text="WAKE UP!!!"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:id="@+id/stopAlarmBtn"
+        android:background="@color/peach"
+        android:layout_below="@+id/notif_title"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+         />
+
+</RelativeLayout>

@@ -23,8 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
     ListView list1;
     ListView list2;
-    TextView errorText ;
 
     List<Task> Suggested;
     static List<Task> userTasks;
@@ -46,39 +43,78 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     ImageButton set ;
 
     TextView Suggested_title;
-    int alarmId;
 
     boolean cancel_f=false;
+    String alarmId;
+
+
+    AccessData<Task> AD_task= new AccessData<>();
+
+    String AlarmData;
+    AccessData<toEntry> AD_toEntry;
+    String Edit_str;
+    boolean Edit;
+    TextView errorText ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
+        errorText = findViewById(R.id.errorText);
+
+        Intent in = getIntent();
+        Bundle extras = in.getExtras();
+        alarmId = extras.getString("id");
+
+
         Model m= new Model(getResources());
+        final String PrefName= getString(R.string.PrefName);
+
+        Edit_str=getIntent().getStringExtra("EditFlag");
+        String AlarmId=getIntent().getStringExtra("AlarmId");
+        if(Edit_str.equals("1")){
+            Edit=true;
+        }
+        else{
+            Edit=false;
+        }
+
+        if(Edit==true){
+            userTasks= AD_task.LoadData_Task(getApplicationContext(), PrefName, "Tasks"+AlarmId);
+            Suggested= AD_task.LoadData_Task(getApplicationContext(), PrefName, "Suggested"+AlarmId);
+            if(userTasks==null){
+                userTasks= new ArrayList<>();
+            }
+            if(Suggested==null){
+                Suggested= new ArrayList<>();
+            }
+
+        }
+        else{
+            userTasks= new ArrayList<>();
+            Suggested= new ArrayList<>();
+            Suggested_arr=m.GetStuff(R.array.SuggestedTasks);
+            for (int i=0; i<Suggested_arr.length; i++)
+            {
+                Suggested.add(new Task(Suggested_arr[i]));
+
+            }
+        }
+
         list1= findViewById(R.id.lv_1);
         list2=findViewById(R.id.lv_2);
         final LayoutInflater factory = getLayoutInflater();
         final View SLH = factory.inflate(R.layout.second_list_header, null);
 
+        AD_toEntry = new AccessData<>();
 
         set = findViewById(R.id.iconImage);
         RelativeLayout lay = findViewById(R.id.RLid);
 
         Suggested_title=findViewById(R.id.title_1);
-        errorText = findViewById(R.id.errorText);
 
-        Intent in = getIntent();
-        Bundle extras = in.getExtras();
-        alarmId = extras.getInt("id");
-
-
-        Suggested= new ArrayList<>();
-        Suggested_arr=m.GetStuff(R.array.SuggestedTasks);
-        for (int i=0; i<Suggested_arr.length; i++)
-        {
-            Suggested.add(new Task(Suggested_arr[i]));
-            Log.d("da5alt",String.valueOf(Suggested.size()));
-        }
 
         View header = getLayoutInflater().inflate(R.layout.first_list_header, null);
         View header2 = getLayoutInflater().inflate(R.layout.second_list_header, null);
@@ -90,7 +126,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         //justifyListViewHeightBasedOnChildren(list1);
         list1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        userTasks= new ArrayList<>();
         adapter= new CustomAdapter(this, R.layout.list_item,userTasks);
         list2.setAdapter(adapter);
 
@@ -107,6 +142,33 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String AlarmId=getIntent().getStringExtra("AlarmId");
+                String hours=getIntent().getStringExtra("hours");
+                String minutes=getIntent().getStringExtra("minutes");
+                String repeatDays = getIntent().getStringExtra("repeatDays");
+
+                AD_task.saveData(userTasks, getApplicationContext(), PrefName, "Tasks"+AlarmId);
+                AD_task.saveData(Suggested, getApplicationContext(), PrefName, "Suggested"+AlarmId);
+
+                String AlarmData=getIntent().getStringExtra("alarmDetails");
+                AD_task.saveData_str(AlarmData, getApplicationContext(),PrefName,"Alarm"+AlarmId );
+
+//                checkDuration chk= new checkDuration();
+//                chk.execute();
+                Intent Set = new Intent(getApplicationContext(), MainActivity.class);
+                Set.putExtra("AlarmId",AlarmId);
+                //Set.putExtra("EditFlag","1");
+                if(Edit==true){
+                    Set.putExtra("Edit", "1");
+                }
+                else {
+                    Set.putExtra("Edit", "0");
+                }
+                Set.putExtra("hours",hours);
+                Set.putExtra("minutes",minutes);
+                Set.putExtra("repeatDays",repeatDays);
+
+
                 if (MainActivity.toList.size()-3 == userTasks.size()) {
 
                     int ii = found(alarmId);
@@ -125,15 +187,16 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
                         chk.execute();
                     }
 
-                    Intent Done = new Intent(getApplicationContext(), MainActivity.class);
                     checkTimes();
-                    startActivity(Done);
+                    startActivity(Set);
 
                 }
                 else
                 {
                     errorText.setText("Please Make Sure You Entered All Values");
                 }
+
+
             }
         });
 
@@ -156,61 +219,9 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         });
 
 
-
         chadapter.setCheckedListener(this);
         adapter.setPressedListener(this);
     }
-
-    void checkTimes() {
-        for (int i = 0; i < userTasks.size(); i++) {
-
-            int time2  = 0 ;
-            int time1 = 0;
-
-            time1 = tasks.userTasks.get(i).Duration_hr * 60 * 60 + tasks.userTasks.get(i).Duration_min * 60; //ingex from tasks
-
-            String name = userTasks.get(i).getName();
-            String lastWord = name.substring(name.lastIndexOf(" ") + 1);
-            lastWord = lastWord.toLowerCase();
-
-            int index = repeated(lastWord);
-            if (index != -1) {
-                time2 = MainActivity.toList.get(index).timeSeconds;
-            }
-
-            if (time1 != time2) {
-                toEntry entry = new toEntry(time1, MainActivity.toList.get(index).latLng, MainActivity.toList.get(index).id);
-                MainActivity.toList.set(index, entry);
-            }
-
-        }
-    }
-
-    int found (int id)
-    {
-        for (int i=0 ;i<MainActivity.chkDuration.size() ;i++)
-        {
-            if (MainActivity.chkDuration.get(i).alarmId == id)
-            {
-                return i ;
-            }
-        }
-        return -1 ;
-    }
-
-
-    int repeated (String id)
-    {
-        for (int i=0 ;i<MainActivity.toList.size() ;i++)
-        {
-            if (MainActivity.toList.get(i).id.equals(id))
-            {
-                return i ;
-            }
-        }
-        return -1 ;
-    }
-
 
     @Override
 
@@ -330,4 +341,56 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         listView.requestLayout();
         return par.height;
     }
+
+    void checkTimes() {
+        for (int i = 0; i < userTasks.size(); i++) {
+
+            int time2  = 0 ;
+            int time1 = 0;
+
+            time1 = tasks.userTasks.get(i).Duration_hr * 60 * 60 + tasks.userTasks.get(i).Duration_min * 60; //ingex from tasks
+
+            String name = userTasks.get(i).getName();
+            String lastWord = name.substring(name.lastIndexOf(" ") + 1);
+            lastWord = lastWord.toLowerCase();
+
+            int index = repeated(lastWord);
+            if (index != -1) {
+                time2 = MainActivity.toList.get(index).timeSeconds;
+            }
+
+            if (time1 != time2) {
+                toEntry entry = new toEntry(time1, MainActivity.toList.get(index).latLng, MainActivity.toList.get(index).id);
+                MainActivity.toList.set(index, entry);
+            }
+
+        }
+    }
+
+    int found (String id)
+    {
+        for (int i=0 ;i<MainActivity.chkDuration.size() ;i++)
+        {
+            if (MainActivity.chkDuration.get(i).alarmId.equals(id) )
+            {
+                return i ;
+            }
+        }
+        return -1 ;
+    }
+
+
+    int repeated (String id)
+    {
+        for (int i=0 ;i<MainActivity.toList.size() ;i++)
+        {
+            if (MainActivity.toList.get(i).id.equals(id))
+            {
+                return i ;
+            }
+        }
+        return -1 ;
+    }
+
+
 }

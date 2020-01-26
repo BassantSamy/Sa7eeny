@@ -36,7 +36,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB1J-wZ5DcCf2OBScVh3u4wpCKcxfmojPQ" />
+            android:value="AIzaSyBIa3BZqje3JmI59_xan-D7h85ZOep0WZ8" />
 
         <activity
             android:name=".MapsActivity"
@@ -51,6 +51,13 @@
         </activity>
 
         <receiver android:name=".AlertReceiver"/>
+        <service
+            android:name=".RingtonePlayingService"
+            android:label="My Service" >
+            <intent-filter>
+                <action android:name="action.cancel.notification"/>
+            </intent-filter>
+        </service>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

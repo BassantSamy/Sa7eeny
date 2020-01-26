@@ -3,10 +3,12 @@ package com.example.project;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
@@ -39,10 +41,15 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannelNotification() {
 
-        Intent closeAlarm = new Intent(this, AlertReceiver.class);
+        Intent dismissIntent = new Intent("action.cancel.notification");
+        PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 0, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_layout);
+
+        notificationLayout.setOnClickPendingIntent(R.id.stopAlarmBtn, pendingIntent);
+
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                .setContentTitle("WAKE UP!!!")
-                .setContentText("You need to get ready!!")
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomBigContentView(notificationLayout)
                 .setSmallIcon(R.drawable.logo);
     }
 }

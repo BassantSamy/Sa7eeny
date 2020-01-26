@@ -3,18 +3,18 @@ package com.example.project;
 public class listEntry {
 
     private String time;
-    private String ampm;
+    private String ID;
 
-    public listEntry(String time, String ampm){
+    public listEntry(String time, String ID){
         this.time = time;
-        this.ampm = ampm;
+        this.ID = ID;
     }
 
     public String getTime(){
         return time;
     }
 
-    public String getAmpm(){
-        return ampm;
-    }
+    public  String getID(){return ID;}
+
+    public void setTime(String Time){this.time=Time;}
 }

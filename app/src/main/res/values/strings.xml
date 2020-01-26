@@ -9,6 +9,7 @@
     <string name="set">Set Alarm !</string>
     <string name="ready">Time to Get Ready :</string>
     <string name="api">AIzaSyB1J-wZ5DcCf2OBScVh3u4wpCKcxfmojPQ</string>
+    <string name="PrefName">shared preference</string>
 
 
     <string-array name="SuggestedTasks">
