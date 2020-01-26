@@ -111,8 +111,6 @@ public class CustomAdapter extends ArrayAdapter<Task>{
                 lastWord = lastWord.toLowerCase();
 
 
-
-
                 Intent Maps = new Intent(getContext(), MapsActivity.class);
                 Maps.putExtra("name", name);
                 int time = tasks.userTasks.get(tasks.userTasks.size()-1).Duration_hr*60*60 +tasks.userTasks.get(tasks.userTasks.size()-1).Duration_min*60 ;

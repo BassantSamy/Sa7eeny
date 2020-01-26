@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +106,10 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
                     checkDuration chk = new checkDuration();
                     chk.execute();
                     Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
+                    checkTimes();
                     startActivity(Set);
+
+
                 }
                 else
                 {
@@ -136,6 +141,44 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
         chadapter.setCheckedListener(this);
         adapter.setPressedListener(this);
     }
+
+    void checkTimes() {
+        for (int i = 0; i < userTasks.size(); i++) {
+
+            int time2  = 0 ;
+            int time1 = 0;
+
+            time1 = tasks.userTasks.get(i).Duration_hr * 60 * 60 + tasks.userTasks.get(i).Duration_min * 60; //ingex from tasks
+
+            String name = userTasks.get(i).getName();
+            String lastWord = name.substring(name.lastIndexOf(" ") + 1);
+            lastWord = lastWord.toLowerCase();
+
+            int index = repeated(lastWord);
+            if (index != -1) {
+                time2 = MainActivity.toList.get(index).timeSeconds;
+            }
+
+            if (time1 != time2) {
+                toEntry entry = new toEntry(time1, MainActivity.toList.get(index).latLng, MainActivity.toList.get(index).id);
+                MainActivity.toList.set(index, entry);
+            }
+
+        }
+    }
+
+    int repeated (String id)
+    {
+        for (int i=0 ;i<MainActivity.toList.size() ;i++)
+        {
+            if (MainActivity.toList.get(i).id.equals(id))
+            {
+                return i ;
+            }
+        }
+        return -1 ;
+    }
+
 
     @Override
 

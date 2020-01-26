@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String setTime="";
     String setHours;
     String setMinutes;
-    static ArrayList <toEntry> toList = new ArrayList<toEntry>();
+    static ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
+    static String timeArrive = null; //db (arrival time)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

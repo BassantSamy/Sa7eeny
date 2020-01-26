@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentLocationmMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
     double latitude,longitude;
-    static double end_latitude, end_longitude;
+    static Double end_latitude = null, end_longitude = null;
     static String destinationDuration, destinationDistance;
     AutoCompleteTextView autoCompleteTextView;
     int tSec = 0 ;
@@ -89,7 +89,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
 
-
+        end_longitude= null ;
+        end_latitude = null ;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -104,6 +105,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         autoCompleteTextView=findViewById(R.id.TF_location);
         autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(MapsActivity.this,android.R.layout.simple_list_item_1));
+
+
 
 
     }
@@ -170,16 +173,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case R.id.B_to:
 
                 /////Get Duration/////
-                dataTransfer = new Object[3];
-                String url = getDirectionsUrl();
-                GetDirectionsData getDirectionsData = new GetDirectionsData();
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url;
-                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
-                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+//                dataTransfer = new Object[3];
+//                String url = getDirectionsUrl();
+//                GetDirectionsData getDirectionsData = new GetDirectionsData();
+//                dataTransfer[0] = mMap;
+//                dataTransfer[1] = url;
+//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+//
+//                dataTransfer[2] = new LatLng(end_latitude, end_longitude);
+//                getDirectionsData.execute(dataTransfer);
 
-                dataTransfer[2] = new LatLng(end_latitude, end_longitude);
-                getDirectionsData.execute(dataTransfer);
+                mMap.clear();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLng(end_latitude, end_longitude));
+                markerOptions.draggable(true);
+                markerOptions.title("Your Destination");
+
+                mMap.addMarker(markerOptions);
+
 
                 Intent in = getIntent();
                 Bundle extras = in.getExtras();
@@ -191,7 +203,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MainActivity.toList.add(entry);
                 else
                     MainActivity.toList.set(index, entry);
-
 
                 break ;
 
@@ -218,7 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
 
-        mMap.clear();
+        //mMap.clear();
         Object dataTransfer[] = new Object[2];
 
         String url = getUrl(latitude, longitude, name);
@@ -423,6 +434,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
+        LatLng latLng;
+        MarkerOptions markerOptions;
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -434,14 +447,63 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currentLocationmMarker.remove();
 
         }
-        LatLng latLng = new LatLng(location.getLatitude() , location.getLongitude()); //get current lat and lng
 
-        MarkerOptions markerOptions = new MarkerOptions(); //set properties to marker
+        Intent in = getIntent();
+        Bundle extras = in.getExtras();
+        String type= extras.getString("name");
 
-        markerOptions.position(latLng);
-        markerOptions.title("Current Location");
+        lastWord = type.substring(type.lastIndexOf(" ")+1);
+        lastWord =lastWord.toLowerCase();
+
+
+        if (MainActivity.toList.size() >=2 && type.equals("none") ) //editing addAlarm Page
+        {
+
+            end_latitude = MainActivity.toList.get(repeated("destination")).latLng.latitude;
+            end_longitude = MainActivity.toList.get(repeated("destination")).latLng.longitude;
+
+
+
+        }
+        else {
+            if (!type.equals("none") && repeated(lastWord)!= -1) //editing tasks page
+            {
+                end_latitude = MainActivity.toList.get(repeated(lastWord)).latLng.latitude;
+                end_longitude = MainActivity.toList.get(repeated(lastWord)).latLng.longitude;
+
+
+            }
+        }
+
+
+        if (end_latitude == null && end_longitude==null ) { //not editing
+            latLng = new LatLng(location.getLatitude(), location.getLongitude()); //get current lat and lng
+            markerOptions = new MarkerOptions(); //set marker to current location
+
+            markerOptions.position(latLng);
+            markerOptions.title("Current Location");
+
+            if (type.equals("none"))
+            {
+                end_longitude= longitude;
+                end_latitude = latitude;
+            }
+        }
+        else
+        {
+            latLng = new LatLng(end_latitude, end_longitude); //get destination lat and lng
+            markerOptions = new MarkerOptions(); //setmarker to previous destination
+
+            markerOptions.position(latLng);
+            markerOptions.title("Previous Destination");
+
+        }
+
+
+
+
         markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         currentLocationmMarker = mMap.addMarker(markerOptions);
 
         ///move camera to that location
@@ -454,14 +516,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        /////////////////////////
-        Intent in = getIntent();
-        Bundle extras = in.getExtras();
-        String type= extras.getString("name");
-
-        lastWord = type.substring(type.lastIndexOf(" ")+1);
-        lastWord =lastWord.toLowerCase();
-
 
         if (!type.equals("none"))
         {
@@ -472,8 +526,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else
         {
             toEntry entry = new toEntry(0 , new LatLng(latitude, longitude), "currentLocation" );
-            end_longitude= longitude;
-            end_latitude = latitude;
             int index = repeated("currentLocation");
             if (index == -1) {
                 MainActivity.toList.add(entry);

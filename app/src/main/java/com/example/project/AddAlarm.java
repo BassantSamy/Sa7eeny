@@ -60,6 +60,23 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         tasksButton = (Button) findViewById(R.id.tasksButton);
         timeReady = findViewById(R.id.getReadyInput);
         errorText = findViewById(R.id.errorText);
+        timePicked = (TextView) findViewById(R.id.timePicked);
+
+
+
+        if (MainActivity.timeArrive != null)
+        {
+            hours =  Integer.parseInt(MainActivity.timeArrive.split("\\:")[0]);
+            minutes =  Integer.parseInt(MainActivity.timeArrive.split("\\:")[1]);
+
+
+            timePicked.setText(MainActivity.timeArrive);
+        }
+
+        if (MainActivity.toList.size()>= 3)
+        {
+            timeReady.setText(MainActivity.toList.get(repeated("readyTime")).timeSeconds/60+"");
+        }
 
 
 
@@ -94,8 +111,16 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
 //                Log.d("hour",String.valueOf(hours));
                     Main.putExtra("hours", String.valueOf(hours));
                     Main.putExtra("minutes", String.valueOf(minutes));
-                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
-                    MainActivity.toList.add(entry);
+
+                    int index = repeated("readyTime");
+                    if (index == -1) {
+                        toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
+                        MainActivity.toList.add(entry);
+                    }
+                    else{
+                        toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
+                        MainActivity.toList.set(index ,entry);
+                    }
                     startActivity(Main);
                 }
                 else
@@ -111,8 +136,16 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
             public void onClick(View v) {
                 if (MainActivity.toList.size()>=2 && hours!=-1 && minutes!=-1 ) {
                     Intent tasksPage = new Intent(getApplicationContext(), tasks.class);
-                    toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null , "readyTime");
-                    MainActivity.toList.add(entry);
+                    int index = repeated ("readyTime");
+                    if (index == -1) {
+                        toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
+                        MainActivity.toList.add(entry);
+                    }
+                    else
+                    {
+                        toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
+                        MainActivity.toList.set(index,entry);
+                    }
                     startActivity(tasksPage);
                 }
                 else
@@ -157,11 +190,24 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        timePicked = (TextView) findViewById(R.id.timePicked);
         timePicked.setText(hourOfDay + " :" + minute);
         hours = hourOfDay;
         minutes = minute;
 
+        MainActivity.timeArrive = hours +":"+minutes ;
+
+    }
+
+    int repeated (String id )
+    {
+        for (int i=0 ;i<MainActivity.toList.size() ;i++)
+        {
+            if (MainActivity.toList.get(i).id.equals(id))
+            {
+                return i ;
+            }
+        }
+        return -1 ;
     }
 
 }
