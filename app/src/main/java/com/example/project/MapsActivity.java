@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -228,6 +229,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void B_generic(String name)
     {
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
 
         //mMap.clear();
         Object dataTransfer[] = new Object[2];
@@ -470,6 +472,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 end_latitude = MainActivity.toList.get(repeated(lastWord)).latLng.latitude;
                 end_longitude = MainActivity.toList.get(repeated(lastWord)).latLng.longitude;
+
 
 
             }

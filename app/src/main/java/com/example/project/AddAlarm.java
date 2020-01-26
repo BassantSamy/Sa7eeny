@@ -66,6 +66,12 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
         Bundle extras = in.getExtras();
         alarmId = extras.getInt("id");
 
+        int ind= repeated("readyTime") ;
+        if (ind != -1)
+        {
+            setTime= MainActivity.toList.get(ind).timeSeconds+"";
+        }
+
 
 
         if (MainActivity.timeArrive != null)

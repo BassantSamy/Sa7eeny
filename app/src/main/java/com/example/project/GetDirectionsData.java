@@ -63,6 +63,7 @@ public class GetDirectionsData extends AsyncTask<Object,String,String> {
 
 
         mMap.addMarker(markerOptions);
+        cancel(true);
 
     }
 

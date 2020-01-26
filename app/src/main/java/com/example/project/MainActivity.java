@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 int id =0 ;
                 Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
                 Set.putExtra("alarmId", id);
-                ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
-                String timeArrive = null; //db (arrival time)
+//                ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
+//                String timeArrive = null; //db (arrival time)
                 startActivity(Set);
             }
         });

@@ -23,56 +23,63 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
     String timeArrive ;
 
 
-    @SuppressLint("WrongThread")
     @Override
     protected Void doInBackground(String... strings) {
-         toList = MainActivity.toList;
-         timeArrive= MainActivity.timeArrive;
+
+        if (MainActivity.toList != null &&MainActivity.timeArrive!= null ) {
+            toList = MainActivity.toList;
+            timeArrive = MainActivity.timeArrive;
+            boolean flag = true ;
+
+
+            while (flag) {
 
 
 
+                String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+
+                java.text.DateFormat df = new java.text.SimpleDateFormat("hh:mm");
+                Date dateUser = null;
+                Date dateCurrent = null;
+
+                try {
+                    dateUser = df.parse(timeArrive);
+                    dateCurrent = df.parse(currentTime);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
-        while(true)
-        {
-            String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-
-            java.text.DateFormat df = new java.text.SimpleDateFormat("hh:mm");
-            Date dateUser = null;
-            Date dateCurrent = null;
-
-            try {
-                dateUser = df.parse(timeArrive);
-                dateCurrent = df.parse(currentTime);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                long diff = dateUser.getTime() - dateCurrent.getTime();
 
 
-            long diff = dateUser.getTime() - dateCurrent.getTime();
+                String url = getDirectionsUrl();
+                String duration = getIncrement(url);
+
+                totalDuration = appendUserTime(Integer.parseInt(duration));
 
 
-
-            String url = getDirectionsUrl();
-            String duration = getIncrement(url);
-
-             totalDuration = appendUserTime(Integer.parseInt(duration));
-
-
-             if (diff/1000 <=  totalDuration)
-             {
-                 //alarm ring !!
-             }
+                if (diff / 1000 <= totalDuration) {
+                    //alarm ring !!
+                    diff = 0;
+                }
 
 
+                try {
+                    sleep(3600000); //one hour increments
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-            try {
-                sleep(3600000); //one hour increments
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                if(isCancelled()) {
+                    flag = false;
+                    cancel(true);
+                }
+
             }
         }
+        return null;
     }
 
     private String getDirectionsUrl()

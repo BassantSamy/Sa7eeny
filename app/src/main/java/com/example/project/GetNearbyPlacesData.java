@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +22,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> imple
     private String googlePlacesData;
     private GoogleMap mMap;
     String url;
+
+
 
     private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlaceList)
     {
@@ -44,6 +47,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> imple
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
+        cancel(true);
+
     }
 
     @Override
@@ -80,5 +85,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> imple
                 MapsActivity.end_longitude=marker.getPosition().longitude;
         return false;
     }
+
+
 }
 
