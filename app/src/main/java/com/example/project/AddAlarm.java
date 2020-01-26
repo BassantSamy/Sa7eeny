@@ -58,7 +58,6 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
     MyAdapter myAdapter;
     boolean timeSet = false;
     int Hour, min;
-    String alarmId;
 
 
 
@@ -127,10 +126,6 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
                 listVOs);
         spinner.setAdapter(myAdapter);
 
-
-        Intent in = getIntent();
-        Bundle extras = in.getExtras();
-        alarmId = extras.getString("id");
 
         int ind= repeated("readyTime") ;
         if (ind != -1)
@@ -209,7 +204,6 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
                         toEntry entry = new toEntry(Integer.parseInt(setTime) * 60, null, "readyTime");
                         MainActivity.toList.set(index,entry);
                     }
-                    tasksPage.putExtra("alarmId", alarmId);
                     startActivity(tasksPage);
                 }
                 else

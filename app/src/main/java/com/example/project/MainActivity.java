@@ -192,8 +192,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 editIntent.putExtra("EditFlag", "1");
                 editIntent.putExtra("AlarmId", ItemID);
 
-                editIntent.putExtra("alarmId",ItemID);
-
                 ///LOAD FROM DB
 
                 startActivity(editIntent);
@@ -241,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 String id = String.valueOf(System.currentTimeMillis()) ;
                 Set.putExtra("AlarmId", id);
                 Set.putExtra("EditFlag", "0");
-                Set.putExtra("alarmId", id);
 
                  ArrayList <toEntry> toList = new ArrayList<toEntry>();
                  String timeArrive = null;

@@ -233,7 +233,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dataTransfer[0] = mMap;
         dataTransfer[1] = url;
 
-        getNearbyPlacesData.execute(dataTransfer);
+        getNearbyPlacesData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,dataTransfer);
+
+        //getNearbyPlacesData.execute(dataTransfer);
         Toast.makeText(MapsActivity.this, "Showing Nearby "+name+"s", Toast.LENGTH_SHORT).show();
     }
 

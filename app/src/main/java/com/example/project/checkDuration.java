@@ -21,6 +21,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
     int totalDuration ;
     ArrayList <toEntry>  toList;
     String timeArrive ;
+    String alarmId ;
 
 
     @Override
@@ -29,6 +30,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
         if (MainActivity.toList != null &&MainActivity.timeArrive!= null ) {
             toList = MainActivity.toList;
             timeArrive = MainActivity.timeArrive;
+            alarmId = strings[0];
             boolean flag = true ;
 
 
