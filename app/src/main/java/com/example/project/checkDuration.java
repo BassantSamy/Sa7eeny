@@ -7,26 +7,63 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static java.lang.Thread.sleep;
 
 public class checkDuration extends AsyncTask<String,Integer,Void> {
 
     int totalDuration ;
+    ArrayList <toEntry>  toList;
+    String timeArrive ;
+
 
     @SuppressLint("WrongThread")
     @Override
     protected Void doInBackground(String... strings) {
+         toList = MainActivity.toList;
+         timeArrive= MainActivity.timeArrive;
+
+
+
+
 
         while(true)
         {
+            String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+
+            java.text.DateFormat df = new java.text.SimpleDateFormat("hh:mm");
+            Date dateUser = null;
+            Date dateCurrent = null;
+
+            try {
+                dateUser = df.parse(timeArrive);
+                dateCurrent = df.parse(currentTime);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            long diff = dateUser.getTime() - dateCurrent.getTime();
+
+
 
             String url = getDirectionsUrl();
             String duration = getIncrement(url);
 
              totalDuration = appendUserTime(Integer.parseInt(duration));
+
+
+             if (diff/1000 <=  totalDuration)
+             {
+                 //alarm ring !!
+             }
 
 
 
@@ -40,7 +77,6 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
     private String getDirectionsUrl()
     {
-        ArrayList <toEntry>  toList = MainActivity.toList;
         LatLng tasks;
 
 
@@ -96,7 +132,6 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
     int appendUserTime(int duration)
     {
-        ArrayList <toEntry>  toList = MainActivity.toList;
 
         for (int i=0 ;i<toList.size();i++)
         {

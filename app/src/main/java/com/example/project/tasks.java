@@ -46,6 +46,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     ImageButton set ;
 
     TextView Suggested_title;
+    int alarmId;
 
     boolean cancel_f=false;
     @Override
@@ -65,6 +66,10 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
         Suggested_title=findViewById(R.id.title_1);
         errorText = findViewById(R.id.errorText);
+
+        Intent in = getIntent();
+        Bundle extras = in.getExtras();
+        alarmId = extras.getInt("id");
 
 
         Suggested= new ArrayList<>();
@@ -103,12 +108,26 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
             @Override
             public void onClick(View v) {
                 if (MainActivity.toList.size()-3 == userTasks.size()) {
-                    checkDuration chk = new checkDuration();
-                    chk.execute();
-                    Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
-                    checkTimes();
-                    startActivity(Set);
 
+                    int ii = found(alarmId);
+                    if (ii== -1 )
+                    {
+                        checkDuration chk = new checkDuration();
+                        chkEntry chE = new chkEntry(alarmId ,chk);
+                        MainActivity.chkDuration.add(chE);
+                        chk.execute();
+                    }
+                    else {
+                        MainActivity.chkDuration.get(ii).cd.cancel(true);
+                        checkDuration chk = new checkDuration();
+                        chkEntry chE = new chkEntry(alarmId ,chk);
+                        MainActivity.chkDuration.set(ii,chE);
+                        chk.execute();
+                    }
+
+                    Intent Done = new Intent(getApplicationContext(), MainActivity.class);
+                    checkTimes();
+                    startActivity(Done);
 
                 }
                 else
@@ -166,6 +185,19 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
         }
     }
+
+    int found (int id)
+    {
+        for (int i=0 ;i<MainActivity.chkDuration.size() ;i++)
+        {
+            if (MainActivity.chkDuration.get(i).alarmId == id)
+            {
+                return i ;
+            }
+        }
+        return -1 ;
+    }
+
 
     int repeated (String id)
     {

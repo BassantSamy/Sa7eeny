@@ -29,11 +29,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.collect.Maps;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String setMinutes;
     static ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
     static String timeArrive = null; //db (arrival time)
+    static ArrayList <chkEntry>chkDuration  = new ArrayList <chkEntry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         adapter.setOnItemClickListener(new RVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                int id =0 ;
                 Intent editIntent = new Intent(getApplicationContext(),AddAlarm.class);
+                editIntent.putExtra("alarmId", id);
+                //LOAD FROM DB NEW ARRAY LIST
                 startActivity(editIntent);
             }
 
@@ -117,7 +123,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int id =0 ;
                 Intent Set = new Intent(getApplicationContext(), AddAlarm.class);
+                Set.putExtra("alarmId", id);
+                ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
+                String timeArrive = null; //db (arrival time)
                 startActivity(Set);
             }
         });

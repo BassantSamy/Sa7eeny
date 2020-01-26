@@ -184,21 +184,7 @@
                 android:textSize="30sp"
                 tools:ignore="NotSibling" />
 
-            <Button
-                android:id="@+id/setButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tasksButton"
-                android:padding="10dp"
-                android:layout_gravity="right"
-                android:drawableRight="@drawable/clock"
-                android:backgroundTint="#E9B6A5"
-                android:fontFamily="@font/bad_script"
-                android:text="@string/set"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="#0E0E0D"
-                android:textSize="30sp"
-                tools:ignore="NotSibling" />
+
 
         <TextView
             android:id="@+id/errorText"
