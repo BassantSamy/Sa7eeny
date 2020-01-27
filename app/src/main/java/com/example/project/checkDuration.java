@@ -57,6 +57,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
 
                 String url = getDirectionsUrl();
+                Log.d("urll",url);
                 String duration = getIncrement(url);
 
                 totalDuration = appendUserTime(Integer.parseInt(duration));

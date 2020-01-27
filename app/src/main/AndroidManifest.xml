@@ -50,10 +50,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlertReceiver"/>
+        <receiver android:name=".AlertReceiver"
+            android:enabled="true"
+            android:exported="true"
+            />
         <service
             android:name=".RingtonePlayingService"
-            android:label="My Service" >
+            android:label="My Service"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="action.cancel.notification"/>
             </intent-filter>

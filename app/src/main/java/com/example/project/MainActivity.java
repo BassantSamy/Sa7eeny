@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             if (alarmsList.get(i).getFirst().equals(f.id)) {
                 if(alarmsList.get(i).getFourth() == false){
 
-                    AlarmManager amfinal = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    AlarmManager amfinal = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     amfinal.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmsList.get(i).getSecond());
                 }
                 else
                 {
-                        AlarmManager amfinalR = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        AlarmManager amfinalR = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                         amfinalR.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY * 7, alarmsList.get(i).getSecond());
                 }
             }
