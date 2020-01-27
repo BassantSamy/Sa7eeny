@@ -251,8 +251,19 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
     @Override
     public void getPressedListener(int position){
+        String name = userTasks.get(position).getName();
+
+        String lastWord = name.substring(name.lastIndexOf(" ")+1);
+        lastWord =lastWord.toLowerCase();
+
+        int index = repeated(lastWord);
+        if (index != -1) {
+            MainActivity.toList.remove(index);
+        }
         userTasks.remove(position);
         adapter.notifyDataSetChanged();
+
+
 
     }
 

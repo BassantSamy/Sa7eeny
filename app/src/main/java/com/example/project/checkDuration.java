@@ -63,7 +63,9 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
 
                 if (diff / 1000 <= totalDuration) {
-                    //alarm ring !!
+                    MainActivity.f.setSomeVariable(totalDuration);
+                    cancel(true);
+
                 }
 
 

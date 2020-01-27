@@ -191,7 +191,14 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
                     tasksPage.putExtra("repeatDays",myAdapter.GetSelected());
                 }
 
-                if (MainActivity.toList.size()>=2 && hours!=-1 && minutes!=-1 ) {
+                boolean flag = true ;
+                try {
+                    Integer.parseInt(setTime);
+
+                } catch(NumberFormatException e){
+                    flag = false;
+                }
+                if (MainActivity.toList.size()>=2 && hours!=-1 && minutes!=-1 &&flag  ) {
 
 
                     int index = repeated ("readyTime");
@@ -208,7 +215,7 @@ public class AddAlarm extends AppCompatActivity implements TimePickerDialog.OnTi
                 }
                 else
                 {
-                    errorText.setText("Please Make Sure You Entered All Values");
+                    errorText.setText("Please Make Sure You Entered All Values Correctly");
                 }
 
             }
