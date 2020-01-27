@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +45,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     TextView Suggested_title;
 
     boolean cancel_f=false;
+    String alarmId;
 
 
     AccessData<Task> AD_task= new AccessData<>();
@@ -66,6 +66,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
         Intent in = getIntent();
         Bundle extras = in.getExtras();
+        alarmId = extras.getString("id");
 
 
         Model m= new Model(getResources());
@@ -170,21 +171,20 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
                 if (MainActivity.toList.size()-3 == userTasks.size()) {
 
-                    int ii = found(AlarmId);
+                    int ii = found(alarmId);
                     if (ii== -1 )
                     {
                         checkDuration chk = new checkDuration();
-                        chkEntry chE = new chkEntry(AlarmId ,chk);
+                        chkEntry chE = new chkEntry(alarmId ,chk);
                         MainActivity.chkDuration.add(chE);
-                        chk.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,AlarmId);
-
+                        chk.execute(alarmId);
                     }
                     else {
                         MainActivity.chkDuration.get(ii).cd.cancel(true);
                         checkDuration chk = new checkDuration();
-                        chkEntry chE = new chkEntry(AlarmId ,chk);
+                        chkEntry chE = new chkEntry(alarmId ,chk);
                         MainActivity.chkDuration.set(ii,chE);
-                        chk.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,AlarmId);
+                        chk.execute(alarmId);
                     }
 
                     checkTimes();
