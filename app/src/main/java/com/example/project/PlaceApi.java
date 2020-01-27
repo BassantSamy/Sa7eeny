@@ -23,7 +23,7 @@ public class PlaceApi {
             StringBuilder sb=new StringBuilder("https://api.tomtom.com/search/2/autocomplete/");
             sb.append(input+".");
             sb.append("json?key=");
-            sb.append("Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+            sb.append("QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn");
             sb.append("&language=en-US");
 
             URL url=new URL(sb.toString());

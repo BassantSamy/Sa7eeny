@@ -72,20 +72,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     static String timeArrive = null; //db (arrival time)
     static ArrayList <chkEntry>chkDuration  = new ArrayList <chkEntry>();
 
-    public void observe(Observable o) {
-        o.addObserver(this);
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        int someVariable = ((Flux) o).getSomeVariable();
-        System.out.println("All is flux!  Some variable is now " + someVariable);
-
-
-    }
-
-    //    AlarmManager alarmManager;
-//    PendingIntent pendingIntent;
     public class Triplet<T, U, V, W> {
 
         private final T first;
@@ -105,8 +91,38 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         public V getThird() { return third; }
         public W getFourth() { return fourth; }
     }
+    AccessData<Triplet<String, PendingIntent, Calendar, Boolean>> AD_triplet= new AccessData<>();
     static List<Triplet<String, PendingIntent, Calendar, Boolean>> alarmsList = new ArrayList<>();
+
+    public void observe(Observable o) {
+        o.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        int someVariable = ((Flux) o).getSomeVariable();
+        System.out.println("All is flux!  Some variable is now " + someVariable);
+        for (int i = 0; i < alarmsList.size(); i++) {
+            if (alarmsList.get(i).getFirst().equals(f.id)) {
+                if(alarmsList.get(i).getFourth() == false){
+
+                    AlarmManager amfinal = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    amfinal.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmsList.get(i).getSecond());
+                }
+                else
+                {
+                        AlarmManager amfinalR = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        amfinalR.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY * 7, alarmsList.get(i).getSecond());
+                }
+            }
+        }
+    }
+
+    //    AlarmManager alarmManager;
+//    PendingIntent pendingIntent;
     AccessData<listEntry> AD_1= new AccessData<>();
+    AccessData<toEntry> AD_toEntry= new AccessData<>();
+    AccessData<chkEntry> AD_chkEntry= new AccessData<>();
 
     String PrefName= "shared preference";
 
@@ -124,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         iv = findViewById(R.id.sleepy);
         addAlarm = findViewById(R.id.addalarm);
         alarms = getResources().getStringArray(R.array.alarms);
-        ampm = getResources().getStringArray(R.array.ampm);
+        //ampm = getResources().getStringArray(R.array.ampm);
         rootLayout = findViewById(R.id.root);
         aSwitch = findViewById(R.id.switch1);
         //LET = new ArrayList<listEntry>();
@@ -132,18 +148,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         if(LET== null) {
             LET = new ArrayList<>();
         }
+        alarmsList=AD_triplet.LoadData(getApplicationContext(), PrefName, "Triplet");
+        if(alarmsList==null){
+            alarmsList = new ArrayList<>();
+        }
         Intent first = getIntent();
         if(first.getExtras() != null){
-//            setHours = getIntent().getExtras().getString("hours");
-//            setMinutes = getIntent().getExtras().getString("minutes");
+            setHours = getIntent().getExtras().getString("hours");
+            setMinutes = getIntent().getExtras().getString("minutes");
             repeatDays = getIntent().getExtras().getString("repeatDays");
             AlarmId = getIntent().getExtras().getString("AlarmId");
             Edit = getIntent().getExtras().getString("Edit");
             cal = Calendar.getInstance();
             Log.d("selDays",repeatDays);
-//            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(setHours));
-//            cal.set(Calendar.MINUTE, Integer.parseInt(setMinutes));
-//            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(setHours));
+            cal.set(Calendar.MINUTE, Integer.parseInt(setMinutes));
+            cal.set(Calendar.SECOND, 0);
             if((repeatDays.equals("0000000"))) {//here noha
                 UpdateTime(cal);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -191,28 +211,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 }
             }
         }
-        //setAlarmF
-
-//        if(setAlarmF == true) {
-//            for (int i = 0; i < alarmsList.size(); i++) {
-//                if (alarmsList.get(i).getFirst() == excuted_alarm_id) {
-//                    if(alarmsList.get(i).getFourth() == false){
-//
-//                        AlarmManager amfinal = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                        amfinal.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmsList.get(i).getSecond());
-//                    }
-//                    else
-//                    {
-//                        AlarmManager amfinalR = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//                        amfinalR.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY * 7, alarmsList.get(i).getSecond());
-//                    }
-//                }
-//            }
-//        }
-//        for (int i = 0; i < alarms.length; i++) {
-//            LE = new listEntry(alarms[i], ampm[i]);
-//            LET.add(LE);
-//        }
 
 
         adapter = new RVAdapter(this, LET);
@@ -229,25 +227,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
             @Override
             public void onItemClick(int position) {
                 ItemID = LET.get(position).getID();
+                toList = AD_toEntry.LoadData_toList(getApplicationContext(), PrefName, "toList"+ItemID);
+                timeArrive = AD_chkEntry.LoadStr(getApplicationContext(), PrefName, "timeArrive"+ItemID);
                 Intent editIntent = new Intent(getApplicationContext(),AddAlarm.class);
                 editIntent.putExtra("EditFlag", "1");
                 editIntent.putExtra("AlarmId", ItemID);
-
-                ///LOAD FROM DB
-
                 startActivity(editIntent);
             }
 
             @Override
             public void onSwitchClick(int position, CompoundButton buttonView, boolean isChecked) {
                 if(isChecked == true){  //here 7aga
-                    if (cal.before(Calendar.getInstance())) {
-                        cal.add(Calendar.DATE, 1);
-                    }
                     //this
                     if(alarmsList.size() != 0){
                         for(int i = 0; i < alarmsList.size(); i++){
                             if (alarmsList.get(i).getFirst().equals(LET.get(position).getID())){
+                                if (alarmsList.get(i).getThird().before(Calendar.getInstance())) {
+                                    alarmsList.get(i).getThird().add(Calendar.DATE, 1);
+                                }
                                 AlarmManager alarmManager2 = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                                 if(alarmsList.get(i).getFourth() == false){
                                     alarmManager2.setExact(AlarmManager.RTC_WAKEUP, alarmsList.get(i).getThird().getTimeInMillis(), alarmsList.get(i).getSecond());

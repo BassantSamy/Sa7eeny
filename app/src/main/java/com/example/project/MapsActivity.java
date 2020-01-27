@@ -130,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch(v.getId())
         {
             case R.id.B_search:
-               // tf_location = findViewById(R.id.TF_location);
+                // tf_location = findViewById(R.id.TF_location);
                 String location = autoCompleteTextView.getText().toString();
                 List<Address> addressList;
                 MarkerOptions mo = new MarkerOptions();
@@ -174,8 +174,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                GetDirectionsData getDirectionsData = new GetDirectionsData();
 //                dataTransfer[0] = mMap;
 //                dataTransfer[1] = url;
-//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
-//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,31.4776983:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn
+//                //https://api.tomtom.com/routing/1/calculateRoute/30.037335,30.037335:29.971841299999994,31.0166975/json?avoid=unpavedRoads&key=QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn
 //
 //                dataTransfer[2] = new LatLng(end_latitude, end_longitude);
 //                getDirectionsData.execute(dataTransfer);
@@ -196,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 toEntry entry = new toEntry(tSec , new LatLng(end_latitude, end_longitude) , lastWord );
                 int index = repeated(lastWord);
                 if (index == -1)
-                MainActivity.toList.add(entry);
+                    MainActivity.toList.add(entry);
                 else
                     MainActivity.toList.set(index, entry);
 
@@ -243,13 +243,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
 
         int versionNumber = 1;
-        //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+        //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn
         StringBuilder googleDirectionsUrl = new StringBuilder("https://api.tomtom.com/routing/");
         googleDirectionsUrl.append(versionNumber+"/calculateRoute/");
         googleDirectionsUrl.append(latitude+","+longitude);
         googleDirectionsUrl.append(":"+end_latitude+","+end_longitude);
         googleDirectionsUrl.append("/json?");
-        googleDirectionsUrl.append("avoid=unpavedRoads&key="+"Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+        googleDirectionsUrl.append("avoid=unpavedRoads&key="+"QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn");
 
         Log.d("MapsActivity", "Directionsurl = "+googleDirectionsUrl.toString());
 
@@ -260,10 +260,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String getUrl(double latitude , double longitude , String nearbyPlace)
     {
-        //https://api.tomtom.com/search/2/nearbySearch/.JSON?key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy&lat=30.0368938&lon=31.4794608&categorySet=7315
+        //https://api.tomtom.com/search/2/nearbySearch/.JSON?key=QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn&lat=30.0368938&lon=31.4794608&categorySet=7315
         // 'https://api.tomtom.com/search/2/nearbySearch/.JSON?key=<Your_API_Key>&lat=<lat>&lon=<lon>&categories=<mapcodes>
         StringBuilder googlePlaceUrl = new StringBuilder("https://api.tomtom.com/search/2/nearbySearch/.JSON?key=");
-        googlePlaceUrl.append("Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+        googlePlaceUrl.append("QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn");
         googlePlaceUrl.append("&lat="+latitude);
         googlePlaceUrl.append("&lon="+longitude);
         String cat = getCategorySet(nearbyPlace);
@@ -286,13 +286,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             jsonObject =getCategoryId (nearbyPlace ,  googlePlacesData);
             if (jsonObject!= null)
-            id = jsonObject.getString("id")   ;
+                id = jsonObject.getString("id")   ;
             else id= "";
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return id;
-        
+
     }
 
     public String loadJSONFromAsset(Context context) {

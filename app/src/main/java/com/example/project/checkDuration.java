@@ -61,16 +61,18 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
                 totalDuration = appendUserTime(Integer.parseInt(duration));
 
+                Log.d("diff",String.valueOf(diff / 1000));
+                Log.d("totalDuration",String.valueOf(totalDuration));
 
                 if (diff / 1000 <= totalDuration) {
+                    MainActivity.f.id = alarmId;
                     MainActivity.f.setSomeVariable(totalDuration);
                     cancel(true);
-
                 }
 
 
                 try {
-                    sleep(3600000); //one hour increments
+                    sleep(1000); //one hour increments
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -91,7 +93,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
 
         int versionNumber = 1;
-        //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy
+        //https://api.tomtom.com/routing/1/calculateRoute/52.50931%2C13.42936%3A52.50274%2C13.43872/json?avoid=unpavedRoads&key=QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn
         StringBuilder googleDirectionsUrl = new StringBuilder("https://api.tomtom.com/routing/");
         googleDirectionsUrl.append(versionNumber+"/calculateRoute/");
 
@@ -109,7 +111,7 @@ public class checkDuration extends AsyncTask<String,Integer,Void> {
 
         }
         googleDirectionsUrl.append("/json?");
-        googleDirectionsUrl.append("avoid=unpavedRoads&key="+"Ed5gKvYT62zrd71bvzOvAgDuyuJIVVQy");
+        googleDirectionsUrl.append("avoid=unpavedRoads&key="+"QYbB9Q5GbCsw9Wlk1vXRWtXTBGgsbwMn");
 
         Log.d("MapsActivity", "Directionsurl = "+googleDirectionsUrl.toString());
 

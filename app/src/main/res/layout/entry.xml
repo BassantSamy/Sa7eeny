@@ -55,7 +55,6 @@
             android:layout_below="@id/TV1"
             android:layout_toRightOf="@id/TV1"
             android:fontFamily="@font/bad_script"
-            android:text="AM"
             android:textColor="@color/black"
             android:textSize="20sp" />
 

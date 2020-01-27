@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -279,6 +280,36 @@ public class AccessData<T> {
 //        return returned_list;
 //
 //    }
+
+    public ArrayList<MainActivity.Triplet<String, PendingIntent, Calendar, Boolean>> LoadData_triplet(Context context, String PrefName, String Key){
+        SharedPreferences sharedPreferences=context.getSharedPreferences(PrefName, context.MODE_PRIVATE);
+        // SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json=sharedPreferences.getString(Key, null);
+        if(json!=null) {
+            Log.d("Log el string bs", json);
+            Type t = new TypeToken<ArrayList<MainActivity.Triplet<String, PendingIntent, Calendar, Boolean>>>() {
+            }.getType();
+            ArrayList<MainActivity.Triplet<String, PendingIntent, Calendar, Boolean>> DI = gson.fromJson(json, t);
+            if (DI != null) {
+                Log.d("ana fi LoadData", json);
+                return DI;
+            }
+            if (DI == null) {
+                DI = new ArrayList<>();
+                return DI;
+            }
+        }
+        return null;
+
+    }
+
+    public String LoadStr(Context context, String PrefName, String Key){
+        SharedPreferences sharedPreferences=context.getSharedPreferences(PrefName, context.MODE_PRIVATE);
+        String str=sharedPreferences.getString(Key, null);
+        return str;
+
+    }
 
 
 }

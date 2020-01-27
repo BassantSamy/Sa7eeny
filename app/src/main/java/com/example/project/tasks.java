@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     TextView Suggested_title;
 
     boolean cancel_f=false;
-    String alarmId;
 
 
     AccessData<Task> AD_task= new AccessData<>();
@@ -55,6 +55,8 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
     String Edit_str;
     boolean Edit;
     TextView errorText ;
+    AccessData<chkEntry> AD_ckEntry= new AccessData<>();
+    AccessData<alarmDataClass> AD_C= new AccessData<>();
 
 
     @Override
@@ -66,7 +68,6 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
         Intent in = getIntent();
         Bundle extras = in.getExtras();
-        alarmId = extras.getString("id");
 
 
         Model m= new Model(getResources());
@@ -157,6 +158,7 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 //                chk.execute();
                 Intent Set = new Intent(getApplicationContext(), MainActivity.class);
                 Set.putExtra("AlarmId",AlarmId);
+                AD_C.EditAlarmList(getApplicationContext(),PrefName, AlarmId,Integer.parseInt(hours) , Integer.parseInt(minutes));
                 //Set.putExtra("EditFlag","1");
                 if(Edit==true){
                     Set.putExtra("Edit", "1");
@@ -171,20 +173,21 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
 
                 if (MainActivity.toList.size()-3 == userTasks.size()) {
 
-                    int ii = found(alarmId);
+                    int ii = found(AlarmId);
                     if (ii== -1 )
                     {
                         checkDuration chk = new checkDuration();
-                        chkEntry chE = new chkEntry(alarmId ,chk);
+                        chkEntry chE = new chkEntry(AlarmId ,chk);
                         MainActivity.chkDuration.add(chE);
-                        chk.execute(alarmId);
+                        chk.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,AlarmId);
+
                     }
                     else {
                         MainActivity.chkDuration.get(ii).cd.cancel(true);
                         checkDuration chk = new checkDuration();
-                        chkEntry chE = new chkEntry(alarmId ,chk);
+                        chkEntry chE = new chkEntry(AlarmId ,chk);
                         MainActivity.chkDuration.set(ii,chE);
-                        chk.execute(alarmId);
+                        chk.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,AlarmId);
                     }
 
                     checkTimes();
@@ -196,7 +199,8 @@ public class tasks extends AppCompatActivity implements chCustomAdapter.Checkbox
                     errorText.setText("Please Make Sure You Entered All Values");
                 }
 
-
+                AD_toEntry.saveData(MainActivity.toList, getApplicationContext(),PrefName, "toList"+AlarmId);
+                AD_ckEntry.saveData_str(MainActivity.timeArrive, getApplicationContext(), PrefName, "timeArrive"+AlarmId);
             }
         });
 
