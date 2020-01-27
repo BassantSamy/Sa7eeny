@@ -36,8 +36,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
+public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener , Observer {
     private RecyclerView RV;
     private List<listEntry> LET;
     private RVAdapter adapter;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String setTime="";
     String setHours;
     String setMinutes;
+    static  Flux f = new Flux();
     String repeatDays;
     String AlarmId;
     static String excuted_alarm_id;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     String ToBeDeletedID;
     String ItemID;
     String Edit="0";
+    static boolean ring = false;
     Calendar cal;
     boolean repeatFlag = false;
     static boolean setAlarmF = false;
@@ -67,6 +71,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     static ArrayList <toEntry> toList = new ArrayList<toEntry>(); //db
     static String timeArrive = null; //db (arrival time)
     static ArrayList <chkEntry>chkDuration  = new ArrayList <chkEntry>();
+
+    public void observe(Observable o) {
+        o.addObserver(this);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        int someVariable = ((Flux) o).getSomeVariable();
+        System.out.println("All is flux!  Some variable is now " + someVariable);
+
+
+    }
 
     //    AlarmManager alarmManager;
 //    PendingIntent pendingIntent;
@@ -98,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        observe(f);
 
 
         imgBtn= findViewById(R.id.searchImageButton);
@@ -262,8 +281,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 Set.putExtra("AlarmId", id);
                 Set.putExtra("EditFlag", "0");
 
-                 ArrayList <toEntry> toList = new ArrayList<toEntry>();
-                 String timeArrive = null;
+                toList = new ArrayList<toEntry>();
+                 timeArrive = null;
 
                 startActivity(Set);
             }
