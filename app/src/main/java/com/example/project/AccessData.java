@@ -212,6 +212,8 @@ public class AccessData<T> {
         sharedPreferences.edit().remove("Alarm"+Key).commit();
         sharedPreferences.edit().remove("Tasks"+Key).commit();
         sharedPreferences.edit().remove("Suggested"+Key).commit();
+        sharedPreferences.edit().remove("toList"+Key).commit();
+        sharedPreferences.edit().remove("timeArrive"+Key).commit();
         removeAlarmList(context, PrefName, Key);
 
     }
